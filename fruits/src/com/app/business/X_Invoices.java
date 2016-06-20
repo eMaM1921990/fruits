@@ -8,14 +8,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.app.business.utils.dateFormatter;
+import com.app.dal.dto.BusinessPartner;
 import com.app.dal.dto.InvoiceLine;
 import com.app.dal.dto.InvoiceLinePk;
 import com.app.dal.dto.InvoiceVw;
 import com.app.dal.dto.Invoices;
 import com.app.dal.dto.InvoicesPk;
+import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
 import com.app.dal.exceptions.InvoicesDaoException;
+import com.app.dal.factory.BusinessPartnerDaoFactory;
 import com.app.dal.factory.InvoiceLineDaoFactory;
 import com.app.dal.factory.InvoiceVwDaoFactory;
 import com.app.dal.factory.InvoicesDaoFactory;
@@ -37,10 +40,21 @@ public class X_Invoices implements I_Invoice{
 		InvoicesPk pk=InvoicesDaoFactory.create().insert(dto);
 		if(pk!=null){
 			request.setAttribute("pk", pk); 
-			
+			// ADD INVOICE LINE
 			try {
 				newInvoiceLine(request);
 			} catch (InvoiceLineDaoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/// UPDATE BALANCE
+			try {
+				updateBalance(dto.getBpId(), Double.parseDouble(dto.getGrandTotal()));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BusinessPartnerDaoException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -114,6 +128,17 @@ public class X_Invoices implements I_Invoice{
 			throws InvoiceVwDaoException {
 		// TODO Auto-generated method stub
 		return new Gson().toJson(getTransaction(request));
+	}
+
+	@Override
+	public void updateBalance(int bpId, double amount) throws BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		BusinessPartner dto=BusinessPartnerDaoFactory.create().findByPrimaryKey(bpId);
+		dto.setBalance(dto.getBalance()+amount);
+		BusinessPartnerDaoFactory.create().update(dto.createPk(), dto);
+		
+		
+		
 	}
 
 }

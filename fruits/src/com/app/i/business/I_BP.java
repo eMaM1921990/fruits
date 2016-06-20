@@ -15,5 +15,9 @@ public interface I_BP {
 	public BusinessPartner[] purchaser(HttpServletRequest request) throws BusinessPartnerDaoException;
 	public BusinessPartner[] sellerAndPurchaser(HttpServletRequest request) throws BusinessPartnerDaoException;
 	public BusinessPartner[] employee(HttpServletRequest request) throws BusinessPartnerDaoException;
+	public BusinessPartner[] getSellerBalance(HttpServletRequest request) throws BusinessPartnerDaoException;
+	public BusinessPartner[] getPuchaserBalance(HttpServletRequest request) throws BusinessPartnerDaoException;
+	public String ajax_getSellerBalance(HttpServletRequest request) throws BusinessPartnerDaoException;
+	public String ajax_getPuchaserBalance(HttpServletRequest request) throws BusinessPartnerDaoException;
 	
 }

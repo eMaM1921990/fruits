@@ -79,6 +79,11 @@ public interface BusinessPartnerDao
 	public BusinessPartner[] findWhereIsSupplierEquals(short isSupplier) throws BusinessPartnerDaoException;
 
 	/** 
+	 * Returns all rows from the business_partner table that match the criteria 'balance = :balance'.
+	 */
+	public BusinessPartner[] findWhereBalanceEquals(double balance) throws BusinessPartnerDaoException;
+
+	/** 
 	 * Sets the value of maxRows
 	 */
 	public void setMaxRows(int maxRows);

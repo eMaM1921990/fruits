@@ -37,7 +37,7 @@
                     <div id="content">
                    	<%@include file="../notification.jsp" %>
 
-                     <form action="javascript:saveSalary()" >
+                     <form action="javascript:saveLoan()" >
                             <table>
                             		<tr>
                            				<td>
@@ -51,10 +51,17 @@
                            					</div>
                            				</td>
                             		</tr>
+                            		
+                            		<tr>
+                                    	<td>
+                                    		<input type="text" name="needToPay" id="needToPay" class="inputs" placeholder="Neet to pay" />
+                                    	</td>
+                                    </tr>
+                                    
                               
                                     <tr>
                                     	<td>
-                                    		<input type="text" name="amount" id="amount" class="inputs" placeholder="Amount" />
+                                    		<input type="text" name="paid" id="paid" class="inputs" placeholder="Amount" />
                                     	</td>
                                     </tr>
                                     
@@ -79,16 +86,17 @@
 </html>
 <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript">
-function saveSalary(){
+function saveLoan(){
 	
 	$.ajax({
-		url : "saveSalary",
+		url : "savePayback",
 		type : "POST",
 		dataType : "text",
 		async:false,
 		data : {
 			bpId : $('#bpId').val(),
-			amount:$('#amount').val(),
+			needToPay:$('#needToPay').val(),
+			paid:$('#paid').val()
 			
 			
 		},

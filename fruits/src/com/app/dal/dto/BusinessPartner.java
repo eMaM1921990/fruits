@@ -66,6 +66,16 @@ public class BusinessPartner implements Serializable
 	 */
 	protected boolean isSupplierNull = true;
 
+	/** 
+	 * This attribute maps to the column balance in the business_partner table.
+	 */
+	protected double balance;
+
+	/** 
+	 * This attribute represents whether the primitive attribute balance is null.
+	 */
+	protected boolean balanceNull = true;
+
 	/**
 	 * Method 'BusinessPartner'
 	 * 
@@ -278,6 +288,47 @@ public class BusinessPartner implements Serializable
 	}
 
 	/**
+	 * Method 'getBalance'
+	 * 
+	 * @return double
+	 */
+	public double getBalance()
+	{
+		return balance;
+	}
+
+	/**
+	 * Method 'setBalance'
+	 * 
+	 * @param balance
+	 */
+	public void setBalance(double balance)
+	{
+		this.balance = balance;
+		this.balanceNull = false;
+	}
+
+	/**
+	 * Method 'setBalanceNull'
+	 * 
+	 * @param value
+	 */
+	public void setBalanceNull(boolean value)
+	{
+		this.balanceNull = value;
+	}
+
+	/**
+	 * Method 'isBalanceNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isBalanceNull()
+	{
+		return balanceNull;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -338,6 +389,14 @@ public class BusinessPartner implements Serializable
 			return false;
 		}
 		
+		if (balance != _cast.balance) {
+			return false;
+		}
+		
+		if (balanceNull != _cast.balanceNull) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -368,6 +427,9 @@ public class BusinessPartner implements Serializable
 		_hashCode = 29 * _hashCode + (isCustomerNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + (int) isSupplier;
 		_hashCode = 29 * _hashCode + (isSupplierNull ? 1 : 0);
+		long temp_balance = Double.doubleToLongBits(balance);
+		_hashCode = 29 * _hashCode + (int) (temp_balance ^ (temp_balance >>> 32));
+		_hashCode = 29 * _hashCode + (balanceNull ? 1 : 0);
 		return _hashCode;
 	}
 
@@ -397,6 +459,7 @@ public class BusinessPartner implements Serializable
 		ret.append( ", isEmployee=" + isEmployee );
 		ret.append( ", isCustomer=" + isCustomer );
 		ret.append( ", isSupplier=" + isSupplier );
+		ret.append( ", balance=" + balance );
 		return ret.toString();
 	}
 

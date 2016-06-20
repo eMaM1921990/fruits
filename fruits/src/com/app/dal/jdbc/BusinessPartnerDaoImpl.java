@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, bp_name, bp_phone, bp_address, is_employee, is_customer, is_supplier FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, bp_name, bp_phone, bp_address, is_employee, is_customer, is_supplier, balance FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, bp_name, bp_phone, bp_address, is_employee, is_customer, is_supplier ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, bp_name, bp_phone, bp_address, is_employee, is_customer, is_supplier, balance ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, bp_name = ?, bp_phone = ?, bp_address = ?, is_employee = ?, is_customer = ?, is_supplier = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, bp_name = ?, bp_phone = ?, bp_address = ?, is_employee = ?, is_customer = ?, is_supplier = ?, balance = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -94,9 +94,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_IS_SUPPLIER = 7;
 
 	/** 
+	 * Index of column balance
+	 */
+	protected static final int COLUMN_BALANCE = 8;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 7;
+	protected static final int NUMBER_OF_COLUMNS = 8;
 
 	/** 
 	 * Index of primary-key column id
@@ -141,6 +146,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setNull( index++, java.sql.Types.INTEGER );
 			} else {
 				stmt.setShort( index++, dto.getIsSupplier() );
+			}
+		
+			if (dto.isBalanceNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getBalance() );
 			}
 		
 			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
@@ -211,7 +222,13 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setShort( index++, dto.getIsSupplier() );
 			}
 		
-			stmt.setInt( 8, pk.getId() );
+			if (dto.isBalanceNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getBalance() );
+			}
+		
+			stmt.setInt( 9, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -337,7 +354,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 */
 	public BusinessPartner[] findWhereIsCustomerEquals(short isCustomer) throws BusinessPartnerDaoException
 	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE is_customer = ? ORDER BY is_customer", new Object[] {  new Short(isCustomer) } );
+		return findByDynamicSelect( SQL_SELECT + " WHERE is_customer = ? ORDER BY balance DESC", new Object[] {  new Short(isCustomer) } );
 	}
 
 	/** 
@@ -345,7 +362,15 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 */
 	public BusinessPartner[] findWhereIsSupplierEquals(short isSupplier) throws BusinessPartnerDaoException
 	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE is_supplier = ? ORDER BY is_supplier", new Object[] {  new Short(isSupplier) } );
+		return findByDynamicSelect( SQL_SELECT + " WHERE is_supplier = ? ORDER BY balance DESC", new Object[] {  new Short(isSupplier) } );
+	}
+
+	/** 
+	 * Returns all rows from the business_partner table that match the criteria 'balance = :balance'.
+	 */
+	public BusinessPartner[] findWhereBalanceEquals(double balance) throws BusinessPartnerDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE balance = ? ORDER BY balance", new Object[] {  new Double(balance) } );
 	}
 
 	/**
@@ -446,6 +471,11 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setIsSupplier( rs.getShort( COLUMN_IS_SUPPLIER ) );
 		if (rs.wasNull()) {
 			dto.setIsSupplierNull( true );
+		}
+		
+		dto.setBalance( rs.getDouble( COLUMN_BALANCE ) );
+		if (rs.wasNull()) {
+			dto.setBalanceNull( true );
 		}
 		
 	}

@@ -4,7 +4,7 @@
 	<ul class="style1">
 		<li class="first"><a href="addEmployee">Add Employee</a></li>
 		<li><a href="tips">Tips</a></li>
-		<li><a href="changeSaleBill">Payback</a></li>
+		<li><a href="Payback">Payback</a></li>
 		<li><a href="addSalary">Salary</a></li>
 	</ul>
 </div>

@@ -3,6 +3,7 @@ package com.app.i.business;
 import javax.servlet.http.HttpServletRequest;
 
 import com.app.dal.dto.InvoiceVw;
+import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
 import com.app.dal.exceptions.InvoicesDaoException;
@@ -18,4 +19,5 @@ public interface I_Invoice {
 	public String ajax_getLastDateInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
 	public InvoiceVw[] getTransaction(HttpServletRequest request) throws InvoiceVwDaoException;
 	public String ajax_getTransaction(HttpServletRequest request) throws InvoiceVwDaoException;
+	public void updateBalance(int bpId,double amount) throws BusinessPartnerDaoException;
 }

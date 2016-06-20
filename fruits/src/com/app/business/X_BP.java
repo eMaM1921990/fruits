@@ -1,11 +1,13 @@
 package com.app.business;
 
 import javax.servlet.http.HttpServletRequest;
+
 import com.app.dal.dto.BusinessPartner;
 import com.app.dal.dto.BusinessPartnerPk;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.factory.BusinessPartnerDaoFactory;
 import com.app.i.business.I_BP;
+import com.google.gson.Gson;
 
 public class X_BP implements I_BP{
 
@@ -83,6 +85,34 @@ public class X_BP implements I_BP{
 		BusinessPartner[] data=BusinessPartnerDaoFactory.create().findByDynamicWhere("is_employee=?", new Object[]{1});
 		return data;
 		
+	}
+
+	@Override
+	public BusinessPartner[] getSellerBalance(HttpServletRequest request) throws BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		BusinessPartner[] data=BusinessPartnerDaoFactory.create().findWhereIsCustomerEquals((short)1);
+		return data;
+	}
+
+	@Override
+	public BusinessPartner[] getPuchaserBalance(HttpServletRequest request) throws BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		BusinessPartner[] data=BusinessPartnerDaoFactory.create().findWhereIsSupplierEquals((short)1);
+		return data;
+	}
+
+	@Override
+	public String ajax_getSellerBalance(HttpServletRequest request)
+			throws BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getSellerBalance(request));
+	}
+
+	@Override
+	public String ajax_getPuchaserBalance(HttpServletRequest request)
+			throws BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getPuchaserBalance(request));
 	}
 
 }
