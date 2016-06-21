@@ -128,7 +128,8 @@ function saveToken(){
 		data : {
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
-			data:"[{'itemId':"+$('#itemId').val()+",'quantity':"+$('#quantity').val()+",'price':"+$('#price').val()+"}]"
+			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
+			data:"[{'itemId':"+$('#itemId').val()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+"}]"
 			
 		},
 		success : function(responseText) {

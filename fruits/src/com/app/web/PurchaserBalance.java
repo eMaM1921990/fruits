@@ -13,16 +13,16 @@ import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.i.business.I_BP;
 
 /**
- * Servlet implementation class SellerBalance
+ * Servlet implementation class PurchaserBalance
  */
-@WebServlet("/SellerBalance")
-public class SellerBalance extends HttpServlet {
+@WebServlet("/PurchaserBalance")
+public class PurchaserBalance extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SellerBalance() {
+    public PurchaserBalance() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,7 +32,6 @@ public class SellerBalance extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		view(request, response);
 	}
 
 	/**
@@ -40,14 +39,13 @@ public class SellerBalance extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		view(request, response);
 	}
 	
 	protected void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String defaultURL="/balance/seller.jsp";
+		String defaultURL="/balance/purchaser.jsp";
 		I_BP bp_business=new X_BP();
 		try {
-			request.setAttribute("balance", bp_business.getSellerBalance(request));
+			request.setAttribute("balance", bp_business.getPuchaserBalance(request));
 		} catch (BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

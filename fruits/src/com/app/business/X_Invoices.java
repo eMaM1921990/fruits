@@ -50,7 +50,10 @@ public class X_Invoices implements I_Invoice{
 			
 			/// UPDATE BALANCE
 			try {
-				updateBalance(dto.getBpId(), Double.parseDouble(dto.getGrandTotal()));
+				if(dto.getIsTrx()==1){
+					updateBalance(dto.getBpId(), Double.parseDouble(dto.getGrandTotal()));
+				}
+				
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

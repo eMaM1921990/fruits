@@ -46,7 +46,7 @@
 
                     	<table>
                     		<tr>
-                    			<td>Seller balance</td>
+                    			<td>Purchaser balance</td>
                     			
                     		</tr>
                     	</table>
@@ -70,10 +70,10 @@
 	                            					<a href="#" class="tooltip">${b.bpName }
 													<span>
 														<b></b>
-														<strong>${b.bpName } Phone number </strong>
+														<strong>${b.bpName } Account number </strong>
 														<br />
 														<img alt="CSS3 tooltip image" style="float:right;height:50px;width:50px;padding-left:5px;" src="img/phone.png" />
-														${b.bpPhone }<br /><br />
+														${b.id }<br /><br />
 													</span>
 												</a>
 	                            					</div>
