@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, invoice_id, item_id, price, quantity, total_price FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, invoice_id, item_id, price, quantity, total_price, type, code FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, invoice_id, item_id, price, quantity, total_price ) VALUES ( ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, invoice_id, item_id, price, quantity, total_price, type, code ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, invoice_id = ?, item_id = ?, price = ?, quantity = ?, total_price = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, invoice_id = ?, item_id = ?, price = ?, quantity = ?, total_price = ?, type = ?, code = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -89,9 +89,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_TOTAL_PRICE = 6;
 
 	/** 
+	 * Index of column type
+	 */
+	protected static final int COLUMN_TYPE = 7;
+
+	/** 
+	 * Index of column code
+	 */
+	protected static final int COLUMN_CODE = 8;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 6;
+	protected static final int NUMBER_OF_COLUMNS = 8;
 
 	/** 
 	 * Index of primary-key column id
@@ -147,6 +157,8 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setDouble( index++, dto.getTotalPrice() );
 			}
 		
+			stmt.setString( index++, dto.getType() );
+			stmt.setString( index++, dto.getCode() );
 			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
 			int rows = stmt.executeUpdate();
 			long t2 = System.currentTimeMillis();
@@ -224,7 +236,9 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setDouble( index++, dto.getTotalPrice() );
 			}
 		
-			stmt.setInt( 7, pk.getId() );
+			stmt.setString( index++, dto.getType() );
+			stmt.setString( index++, dto.getCode() );
+			stmt.setInt( 9, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -306,22 +320,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	}
 
 	/** 
-	 * Returns all rows from the invoice_line table that match the criteria 'invoice_id = :invoiceId'.
-	 */
-	public InvoiceLine[] findByInvoices(int invoiceId) throws InvoiceLineDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE invoice_id = ?", new Object[] {  new Integer(invoiceId) } );
-	}
-
-	/** 
-	 * Returns all rows from the invoice_line table that match the criteria 'item_id = :itemId'.
-	 */
-	public InvoiceLine[] findByItems(int itemId) throws InvoiceLineDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE item_id = ?", new Object[] {  new Integer(itemId) } );
-	}
-
-	/** 
 	 * Returns all rows from the invoice_line table that match the criteria 'id = :id'.
 	 */
 	public InvoiceLine[] findWhereIdEquals(int id) throws InvoiceLineDaoException
@@ -367,6 +365,22 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	public InvoiceLine[] findWhereTotalPriceEquals(double totalPrice) throws InvoiceLineDaoException
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE total_price = ? ORDER BY total_price", new Object[] {  new Double(totalPrice) } );
+	}
+
+	/** 
+	 * Returns all rows from the invoice_line table that match the criteria 'type = :type'.
+	 */
+	public InvoiceLine[] findWhereTypeEquals(String type) throws InvoiceLineDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE type = ? ORDER BY type", new Object[] { type } );
+	}
+
+	/** 
+	 * Returns all rows from the invoice_line table that match the criteria 'code = :code'.
+	 */
+	public InvoiceLine[] findWhereCodeEquals(String code) throws InvoiceLineDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE code = ? ORDER BY code", new Object[] { code } );
 	}
 
 	/**
@@ -476,6 +490,8 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			dto.setTotalPriceNull( true );
 		}
 		
+		dto.setType( rs.getString( COLUMN_TYPE ) );
+		dto.setCode( rs.getString( COLUMN_CODE ) );
 	}
 
 	/** 

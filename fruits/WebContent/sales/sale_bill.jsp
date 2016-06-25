@@ -126,7 +126,7 @@ var lastID=1;
 
 function addNewRow(){
 	lastID=lastID+1;
-	var fruit="<div class='select-style;><select name='itemId' onchange='getItemPrice(this.value,"+lastID+")' id='itemId'><option>Select Fruit</option>";
+	var fruit="<div class='select-style'><select name='itemId' onchange='getItemPrice(this.value,"+lastID+")' id='itemId'><option>Select Fruit</option>";
 	for (var key in dict) {
 		fruit=fruit+"<option value='"+dict[key].id+"'>"+dict[key].code+"</option>";
 	}
@@ -151,7 +151,8 @@ function validateTable(){
         	rowData.push({
               "itemId":parseInt(itemId),
               "price":parseFloat(price),
-              "quantity":parseFloat(quantity)
+              "quantity":parseFloat(quantity),
+              "code":dict[itemId].code
           });
         }
   });

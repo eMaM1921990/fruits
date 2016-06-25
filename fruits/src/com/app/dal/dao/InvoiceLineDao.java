@@ -44,16 +44,6 @@ public interface InvoiceLineDao
 	public InvoiceLine[] findAll() throws InvoiceLineDaoException;
 
 	/** 
-	 * Returns all rows from the invoice_line table that match the criteria 'invoice_id = :invoiceId'.
-	 */
-	public InvoiceLine[] findByInvoices(int invoiceId) throws InvoiceLineDaoException;
-
-	/** 
-	 * Returns all rows from the invoice_line table that match the criteria 'item_id = :itemId'.
-	 */
-	public InvoiceLine[] findByItems(int itemId) throws InvoiceLineDaoException;
-
-	/** 
 	 * Returns all rows from the invoice_line table that match the criteria 'id = :id'.
 	 */
 	public InvoiceLine[] findWhereIdEquals(int id) throws InvoiceLineDaoException;
@@ -82,6 +72,16 @@ public interface InvoiceLineDao
 	 * Returns all rows from the invoice_line table that match the criteria 'total_price = :totalPrice'.
 	 */
 	public InvoiceLine[] findWhereTotalPriceEquals(double totalPrice) throws InvoiceLineDaoException;
+
+	/** 
+	 * Returns all rows from the invoice_line table that match the criteria 'type = :type'.
+	 */
+	public InvoiceLine[] findWhereTypeEquals(String type) throws InvoiceLineDaoException;
+
+	/** 
+	 * Returns all rows from the invoice_line table that match the criteria 'code = :code'.
+	 */
+	public InvoiceLine[] findWhereCodeEquals(String code) throws InvoiceLineDaoException;
 
 	/** 
 	 * Sets the value of maxRows

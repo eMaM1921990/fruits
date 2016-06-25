@@ -71,6 +71,16 @@ public class InvoiceLine implements Serializable
 	 */
 	protected boolean totalPriceNull = true;
 
+	/** 
+	 * This attribute maps to the column type in the invoice_line table.
+	 */
+	protected String type;
+
+	/** 
+	 * This attribute maps to the column code in the invoice_line table.
+	 */
+	protected String code;
+
 	/**
 	 * Method 'InvoiceLine'
 	 * 
@@ -305,6 +315,46 @@ public class InvoiceLine implements Serializable
 	}
 
 	/**
+	 * Method 'getType'
+	 * 
+	 * @return String
+	 */
+	public String getType()
+	{
+		return type;
+	}
+
+	/**
+	 * Method 'setType'
+	 * 
+	 * @param type
+	 */
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	/**
+	 * Method 'getCode'
+	 * 
+	 * @return String
+	 */
+	public String getCode()
+	{
+		return code;
+	}
+
+	/**
+	 * Method 'setCode'
+	 * 
+	 * @param code
+	 */
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -369,6 +419,14 @@ public class InvoiceLine implements Serializable
 			return false;
 		}
 		
+		if (type == null ? _cast.type != type : !type.equals( _cast.type )) {
+			return false;
+		}
+		
+		if (code == null ? _cast.code != code : !code.equals( _cast.code )) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -394,6 +452,14 @@ public class InvoiceLine implements Serializable
 		long temp_totalPrice = Double.doubleToLongBits(totalPrice);
 		_hashCode = 29 * _hashCode + (int) (temp_totalPrice ^ (temp_totalPrice >>> 32));
 		_hashCode = 29 * _hashCode + (totalPriceNull ? 1 : 0);
+		if (type != null) {
+			_hashCode = 29 * _hashCode + type.hashCode();
+		}
+		
+		if (code != null) {
+			_hashCode = 29 * _hashCode + code.hashCode();
+		}
+		
 		return _hashCode;
 	}
 
@@ -422,6 +488,8 @@ public class InvoiceLine implements Serializable
 		ret.append( ", price=" + price );
 		ret.append( ", quantity=" + quantity );
 		ret.append( ", totalPrice=" + totalPrice );
+		ret.append( ", type=" + type );
+		ret.append( ", code=" + code );
 		return ret.toString();
 	}
 

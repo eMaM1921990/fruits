@@ -2,11 +2,15 @@ package com.app.i.business;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.app.dal.dto.InvoiceLine;
 import com.app.dal.dto.InvoiceVw;
+import com.app.dal.dto.Invoices;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
 import com.app.dal.exceptions.InvoicesDaoException;
+import com.app.dal.exceptions.PattiDaoException;
+import com.app.dal.exceptions.PattiLinesDaoException;
 
 public interface I_Invoice {
 
@@ -20,4 +24,10 @@ public interface I_Invoice {
 	public InvoiceVw[] getTransaction(HttpServletRequest request) throws InvoiceVwDaoException;
 	public String ajax_getTransaction(HttpServletRequest request) throws InvoiceVwDaoException;
 	public void updateBalance(int bpId,double amount) throws BusinessPartnerDaoException;
+	public InvoiceLine getAvg(HttpServletRequest request) throws InvoiceLineDaoException;
+	public String ajax_getAvg(HttpServletRequest request) throws InvoiceLineDaoException;
+	public void newPatti(HttpServletRequest request) throws PattiDaoException, PattiLinesDaoException;
+	public void newPattiLine(HttpServletRequest request) throws PattiLinesDaoException;
+	public Invoices getInvoice(HttpServletRequest request) throws InvoicesDaoException;
+	public String ajax_getInvoice(HttpServletRequest request) throws InvoicesDaoException;
 }

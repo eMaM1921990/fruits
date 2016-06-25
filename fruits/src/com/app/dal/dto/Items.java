@@ -61,6 +61,11 @@ public class Items implements Serializable
 	 */
 	protected boolean priceNull = true;
 
+	/** 
+	 * This attribute maps to the column type in the items table.
+	 */
+	protected String type;
+
 	/**
 	 * Method 'Items'
 	 * 
@@ -253,6 +258,26 @@ public class Items implements Serializable
 	}
 
 	/**
+	 * Method 'getType'
+	 * 
+	 * @return String
+	 */
+	public String getType()
+	{
+		return type;
+	}
+
+	/**
+	 * Method 'setType'
+	 * 
+	 * @param type
+	 */
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -309,6 +334,10 @@ public class Items implements Serializable
 			return false;
 		}
 		
+		if (type == null ? _cast.type != type : !type.equals( _cast.type )) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -337,6 +366,10 @@ public class Items implements Serializable
 		long temp_price = Double.doubleToLongBits(price);
 		_hashCode = 29 * _hashCode + (int) (temp_price ^ (temp_price >>> 32));
 		_hashCode = 29 * _hashCode + (priceNull ? 1 : 0);
+		if (type != null) {
+			_hashCode = 29 * _hashCode + type.hashCode();
+		}
+		
 		return _hashCode;
 	}
 
@@ -365,6 +398,7 @@ public class Items implements Serializable
 		ret.append( ", stockId=" + stockId );
 		ret.append( ", code=" + code );
 		ret.append( ", price=" + price );
+		ret.append( ", type=" + type );
 		return ret.toString();
 	}
 

@@ -44,11 +44,6 @@ public interface ItemsDao
 	public Items[] findAll() throws ItemsDaoException;
 
 	/** 
-	 * Returns all rows from the items table that match the criteria 'stock_id = :stockId'.
-	 */
-	public Items[] findByStock(int stockId) throws ItemsDaoException;
-
-	/** 
 	 * Returns all rows from the items table that match the criteria 'id = :id'.
 	 */
 	public Items[] findWhereIdEquals(int id) throws ItemsDaoException;
@@ -77,6 +72,11 @@ public interface ItemsDao
 	 * Returns all rows from the items table that match the criteria 'price = :price'.
 	 */
 	public Items[] findWherePriceEquals(double price) throws ItemsDaoException;
+
+	/** 
+	 * Returns all rows from the items table that match the criteria 'type = :type'.
+	 */
+	public Items[] findWhereTypeEquals(String type) throws ItemsDaoException;
 
 	/** 
 	 * Sets the value of maxRows

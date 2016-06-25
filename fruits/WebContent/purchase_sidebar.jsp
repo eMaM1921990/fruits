@@ -2,8 +2,8 @@
 	<h2>Purchase</h2>
        
 	<ul class="style1">
-		<li class="first"><a href="tokenEntery">Add New Purchase Stock</a></li>
-		<li><a href="saleBill">Generate Patti</a></li>
+		<li class="first"><a href="StockPurhcaser">Add New Purchase Stock</a></li>
+		<li><a href="patti">Generate Patti</a></li>
 		<li><a href="changeSaleBill">Change Patti</a></li>
 		<li><a href="lastBillDate">Print Old Patti</a></li>
 		<li><a href="getSaleTransaction">Transaction from to date</a></li>

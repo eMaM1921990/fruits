@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.app.business.utils.dateFormatter;
@@ -14,14 +15,21 @@ import com.app.dal.dto.InvoiceLinePk;
 import com.app.dal.dto.InvoiceVw;
 import com.app.dal.dto.Invoices;
 import com.app.dal.dto.InvoicesPk;
+import com.app.dal.dto.Patti;
+import com.app.dal.dto.PattiLines;
+import com.app.dal.dto.PattiPk;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
 import com.app.dal.exceptions.InvoicesDaoException;
+import com.app.dal.exceptions.PattiDaoException;
+import com.app.dal.exceptions.PattiLinesDaoException;
 import com.app.dal.factory.BusinessPartnerDaoFactory;
 import com.app.dal.factory.InvoiceLineDaoFactory;
 import com.app.dal.factory.InvoiceVwDaoFactory;
 import com.app.dal.factory.InvoicesDaoFactory;
+import com.app.dal.factory.PattiDaoFactory;
+import com.app.dal.factory.PattiLinesDaoFactory;
 import com.app.i.business.I_Invoice;
 import com.google.gson.Gson;
 
@@ -78,6 +86,11 @@ public class X_Invoices implements I_Invoice{
 			dto.setItemId(obj.getInt("itemId"));
 			dto.setPrice(obj.getDouble("price"));
 			dto.setQuantity(obj.getDouble("quantity"));
+			dto.setCode(obj.getString("code"));
+			// for purchasee
+			if(Short.parseShort(request.getParameter("isTrx"))==0){
+				dto.setType(request.getParameter("type"));
+			}
 			InvoiceLineDaoFactory.create().insert(dto);
 		}
 		
@@ -142,6 +155,77 @@ public class X_Invoices implements I_Invoice{
 		
 		
 		
+	}
+
+	@Override
+	public InvoiceLine getAvg(HttpServletRequest request) throws InvoiceLineDaoException {
+		// TODO Auto-generated method stub
+		System.out.println(request.getParameter("code"));
+		InvoiceLine data=InvoiceLineDaoFactory.create().findByDynamicSelect("SELECT 0 as id, 0 as invoice_id,0 as item_id, AVG(quantity) as qunatity,AVG(quantity*price) as price,0 as total_price,null as type ,code from invoice_line where code=? group by code", new Object[]{request.getParameter("code")})[0];
+		return data;
+	}
+
+	@Override
+	public String ajax_getAvg(HttpServletRequest request) throws InvoiceLineDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getAvg(request));
+	}
+
+	@Override
+	public void newPatti(HttpServletRequest request) throws PattiDaoException, PattiLinesDaoException {
+		// TODO Auto-generated method stub
+		Patti dto=new Patti();
+		dto.setPattiDate(new Date());
+		PattiPk pk=PattiDaoFactory.create().insert(dto);
+		if(pk!=null){
+			newPattiLine(request);
+		}
+		
+	}
+
+	@Override
+	public void newPattiLine(HttpServletRequest request) throws PattiLinesDaoException {
+		// TODO Auto-generated method stub
+		System.out.println(request.getParameter("data"));
+		JSONArray data=new JSONArray(request.getParameter("data"));
+		for(int i=0;i<data.length();i++){
+			JSONObject obj=data.getJSONObject(i);
+			PattiLines dto=new PattiLines();
+			dto.setActualCost(obj.getDouble("actualCost"));
+			dto.setActualQuantity(obj.getInt("actualQuantity"));
+			dto.setAvgCost(obj.getDouble("avgCost"));
+			dto.setAvgQuantity(obj.getInt("avgQuantity"));
+			dto.setCode(obj.getString("code"));
+			dto.setCommissionPercent(obj.getDouble("commissionPercent"));
+			dto.setCooli(obj.getDouble("cooli"));
+			dto.setLoory(obj.getDouble("loory"));
+			PattiLinesDaoFactory.create().insert(dto);
+			
+			try {
+				updateBalance(obj.getInt("bpId"), obj.getDouble("balance")*-1);
+			} catch (BusinessPartnerDaoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public Invoices getInvoice(HttpServletRequest request) throws InvoicesDaoException {
+		// TODO Auto-generated method stub
+		Invoices data=InvoicesDaoFactory.create().findByDynamicWhere("id = (select invoice_id from invoice_line where code=?)", new Object[]{request.getParameter("code")})[0];
+		return data;
+	}
+
+	@Override
+	public String ajax_getInvoice(HttpServletRequest request)
+			throws InvoicesDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getInvoice(request));
 	}
 
 }

@@ -37,16 +37,16 @@
                     <div id="content">
                    	<%@include file="../notification.jsp" %>
 
-                     <form action="javascript:saveToken()" name="AddPrintToken" method="post">
+                     <form action="javascript:savePurchase()" name="AddPrintToken" method="post">
                     	<table>
                     		<tr>
-                    			<td>Sales Bill To</td>
+                    			<td>Add New purchaser</td>
                     			<td>
                     				<div class="select-style">
                     				
 	                    				<select name="bpId" id="bpId">
 	                        				<option>Select Seller</option>
-	                        				<c:forEach items="${customer }" var="cus">
+	                        				<c:forEach items="${purchaser }" var="cus">
 	                        					<option value="${cus.id }">${cus.bpName }</option>
 	                        				</c:forEach>
 	                        			</select>
@@ -62,21 +62,27 @@
                        <br/>
                             <font size="4">  <table>
                                     <tr>
-                                        <td>Fruit Code*:</td>
+                                        <td>Fruit Name*:</td>
                                         <td>
                                         	<div class="select-style">
                                         	
 	                                        	<select name="itemId" onchange="getItemPrice(this.value)" id="itemId">
 	                                        		<option>Select Fruit</option>
 	                                        		<c:forEach items="${ItemData }" var="c">
-	                                        			<option value="${c.id }">${c.code }</option>
+	                                        			<option value="${c.id }">${c.name }</option>
 	                                        		</c:forEach>
 	                                        	</select>
                                         	</div>
                                         </td>
                                             
-                                    </tr>
+                              	      </tr>
+                                   
                                     <tr>
+                                        <td>Type*:</td>
+                                        <td><input type="text" name="type" id="type" class="inputs" placeholder="Fruit type"/></td>		
+                                    </tr>
+                                    
+                                     <tr>
                                         <td>Quantity*:</td>
                                         <td><input type="text" name="quantity" id="quantity" class="inputs" placeholder="Quantity"/></td>		
                                     </tr>
@@ -86,14 +92,14 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">  
-                                         <input class="button-style" type="submit" name="commit" value="Print Token"/>
+                                         <input class="button-style" type="submit" name="commit" value="Save"/>
                                          </td>
                                     </tr>
-                                    <input type="hidden" name="isTrx" value="1" id="isTrx"/>
+                                    <input type="hidden" name="isTrx" value="0" id="isTrx"/>
                                 </table></font>
                         </form>   
                     </div>
-                    <%@ include file="../sales_sidebar.jsp"%>
+                    <%@ include file="../purchase_sidebar.jsp"%>
 
                 </div>
             </div>
@@ -119,9 +125,9 @@ function getItemPrice(id){
 	$('#price').val(dict[id].price);
 }
 
-function saveToken(){
+function savePurchase(){
 	$.ajax({
-		url : "saveToken",
+		url : "savePurchase",
 		type : "POST",
 		dataType : "text",
 		async:false,
@@ -129,7 +135,7 @@ function saveToken(){
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
 			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
-			data:"[{'itemId':"+$('#itemId').val()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+",'code':"+dict[$('#itemId').val()].code.toString()+"}]"
+			data:"[{'itemId':"+$('#itemId').val()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+",'type':"+$('#type').val()+",'code':"+dict[$('#itemId').val()].code.toString()+"}]"
 			
 		},
 		success : function(responseText) {
