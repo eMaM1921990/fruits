@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id, balance, bp_id FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id, balance, bp_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, code = ?, avg_cost = ?, avg_quantity = ?, actual_cost = ?, actual_quantity = ?, commission_percent = ?, loory = ?, cooli = ?, patti_id = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, code = ?, avg_cost = ?, avg_quantity = ?, actual_cost = ?, actual_quantity = ?, commission_percent = ?, loory = ?, cooli = ?, patti_id = ?, balance = ?, bp_id = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -109,9 +109,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_PATTI_ID = 10;
 
 	/** 
+	 * Index of column balance
+	 */
+	protected static final int COLUMN_BALANCE = 11;
+
+	/** 
+	 * Index of column bp_id
+	 */
+	protected static final int COLUMN_BP_ID = 12;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 10;
+	protected static final int NUMBER_OF_COLUMNS = 12;
 
 	/** 
 	 * Index of primary-key column id
@@ -184,6 +194,18 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setNull( index++, java.sql.Types.INTEGER );
 			} else {
 				stmt.setInt( index++, dto.getPattiId() );
+			}
+		
+			if (dto.isBalanceNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getBalance() );
+			}
+		
+			if (dto.isBpIdNull()) {
+				stmt.setNull( index++, java.sql.Types.INTEGER );
+			} else {
+				stmt.setInt( index++, dto.getBpId() );
 			}
 		
 			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
@@ -282,7 +304,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setInt( index++, dto.getPattiId() );
 			}
 		
-			stmt.setInt( 11, pk.getId() );
+			if (dto.isBalanceNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getBalance() );
+			}
+		
+			if (dto.isBpIdNull()) {
+				stmt.setNull( index++, java.sql.Types.INTEGER );
+			} else {
+				stmt.setInt( index++, dto.getBpId() );
+			}
+		
+			stmt.setInt( 13, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -364,14 +398,6 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	}
 
 	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
-	 */
-	public PattiLines[] findByPatti(int pattiId) throws PattiLinesDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE patti_id = ?", new Object[] {  new Integer(pattiId) } );
-	}
-
-	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'id = :id'.
 	 */
 	public PattiLines[] findWhereIdEquals(int id) throws PattiLinesDaoException
@@ -449,6 +475,22 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	public PattiLines[] findWherePattiIdEquals(int pattiId) throws PattiLinesDaoException
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE patti_id = ? ORDER BY patti_id", new Object[] {  new Integer(pattiId) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'balance = :balance'.
+	 */
+	public PattiLines[] findWhereBalanceEquals(double balance) throws PattiLinesDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE balance = ? ORDER BY balance", new Object[] {  new Double(balance) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'bp_id = :bpId'.
+	 */
+	public PattiLines[] findWhereBpIdEquals(int bpId) throws PattiLinesDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE bp_id = ? ORDER BY bp_id", new Object[] {  new Integer(bpId) } );
 	}
 
 	/**
@@ -572,6 +614,16 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setPattiId( rs.getInt( COLUMN_PATTI_ID ) );
 		if (rs.wasNull()) {
 			dto.setPattiIdNull( true );
+		}
+		
+		dto.setBalance( rs.getDouble( COLUMN_BALANCE ) );
+		if (rs.wasNull()) {
+			dto.setBalanceNull( true );
+		}
+		
+		dto.setBpId( rs.getInt( COLUMN_BP_ID ) );
+		if (rs.wasNull()) {
+			dto.setBpIdNull( true );
 		}
 		
 	}

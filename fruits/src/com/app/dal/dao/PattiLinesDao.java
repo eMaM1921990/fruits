@@ -44,11 +44,6 @@ public interface PattiLinesDao
 	public PattiLines[] findAll() throws PattiLinesDaoException;
 
 	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
-	 */
-	public PattiLines[] findByPatti(int pattiId) throws PattiLinesDaoException;
-
-	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'id = :id'.
 	 */
 	public PattiLines[] findWhereIdEquals(int id) throws PattiLinesDaoException;
@@ -97,6 +92,16 @@ public interface PattiLinesDao
 	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
 	 */
 	public PattiLines[] findWherePattiIdEquals(int pattiId) throws PattiLinesDaoException;
+
+	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'balance = :balance'.
+	 */
+	public PattiLines[] findWhereBalanceEquals(double balance) throws PattiLinesDaoException;
+
+	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'bp_id = :bpId'.
+	 */
+	public PattiLines[] findWhereBpIdEquals(int bpId) throws PattiLinesDaoException;
 
 	/** 
 	 * Sets the value of maxRows

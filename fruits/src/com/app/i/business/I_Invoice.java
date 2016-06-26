@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.app.dal.dto.InvoiceLine;
 import com.app.dal.dto.InvoiceVw;
 import com.app.dal.dto.Invoices;
+import com.app.dal.dto.Patti;
+import com.app.dal.dto.PattiLines;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
@@ -30,4 +32,8 @@ public interface I_Invoice {
 	public void newPattiLine(HttpServletRequest request) throws PattiLinesDaoException;
 	public Invoices getInvoice(HttpServletRequest request) throws InvoicesDaoException;
 	public String ajax_getInvoice(HttpServletRequest request) throws InvoicesDaoException;
+	public Patti[] listPatti(HttpServletRequest request) throws PattiDaoException;
+	public PattiLines[] PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException;
+	public String ajax_PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException;
+	public void updatePattiLine(HttpServletRequest request) throws PattiLinesDaoException;
 }

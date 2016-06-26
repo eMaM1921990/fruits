@@ -8,21 +8,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.app.business.X_BP;
-import com.app.dal.exceptions.BusinessPartnerDaoException;
-import com.app.i.business.I_BP;
+import com.app.business.X_Invoices;
+import com.app.dal.exceptions.PattiLinesDaoException;
+import com.app.i.business.I_Invoice;
 
 /**
- * Servlet implementation class PurchaserBalance
+ * Servlet implementation class ajax_pattiDetails
  */
-@WebServlet("/PurchaserBalance")
-public class PurchaserBalance extends HttpServlet {
+@WebServlet("/ajax_pattiDetails")
+public class ajax_pattiDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PurchaserBalance() {
+    public ajax_pattiDetails() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,28 +32,20 @@ public class PurchaserBalance extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		view(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub 
-		view(request, response);
-	}
-	
-	protected void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String defaultURL="/balance/purchaser.jsp";
-		I_BP bp_business=new X_BP();
+		// TODO Auto-generated method stub
+		I_Invoice business=new X_Invoices();
 		try {
-			request.setAttribute("balance", bp_business.getPuchaserBalance(request));
-		} catch (BusinessPartnerDaoException e) {
+			response.getWriter().write(business.ajax_PattiLine(request));
+		} catch (NumberFormatException | PattiLinesDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
-		request.getRequestDispatcher(defaultURL).include(request, response);
+		}
 	}
 
 }

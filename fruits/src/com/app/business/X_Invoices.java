@@ -17,6 +17,7 @@ import com.app.dal.dto.Invoices;
 import com.app.dal.dto.InvoicesPk;
 import com.app.dal.dto.Patti;
 import com.app.dal.dto.PattiLines;
+import com.app.dal.dto.PattiLinesPk;
 import com.app.dal.dto.PattiPk;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
@@ -135,7 +136,7 @@ public class X_Invoices implements I_Invoice{
 	@Override
 	public InvoiceVw[] getTransaction(HttpServletRequest request) throws InvoiceVwDaoException {
 		// TODO Auto-generated method stub
-		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere(" date between ? and ? order by date desc", new Object[]{dateFormatter.getSQLDate(request.getParameter("datefrom")),dateFormatter.getSQLDate(request.getParameter("dateto"))});
+		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere(" date between ? and ? and is_trx=? order by date desc", new Object[]{dateFormatter.getSQLDate(request.getParameter("datefrom")),dateFormatter.getSQLDate(request.getParameter("dateto")),new Integer(Integer.parseInt(request.getParameter("isTrx")))});
 		return data;
 	}
 
@@ -178,6 +179,7 @@ public class X_Invoices implements I_Invoice{
 		dto.setPattiDate(new Date());
 		PattiPk pk=PattiDaoFactory.create().insert(dto);
 		if(pk!=null){
+			request.setAttribute("pk", pk.getId());
 			newPattiLine(request);
 		}
 		
@@ -199,6 +201,9 @@ public class X_Invoices implements I_Invoice{
 			dto.setCommissionPercent(obj.getDouble("commissionPercent"));
 			dto.setCooli(obj.getDouble("cooli"));
 			dto.setLoory(obj.getDouble("loory"));
+			dto.setPattiId((int)request.getAttribute("pk"));
+			dto.setBalance(obj.getDouble("balance"));
+			dto.setBpId(obj.getInt("bpId"));
 			PattiLinesDaoFactory.create().insert(dto);
 			
 			try {
@@ -217,7 +222,7 @@ public class X_Invoices implements I_Invoice{
 	@Override
 	public Invoices getInvoice(HttpServletRequest request) throws InvoicesDaoException {
 		// TODO Auto-generated method stub
-		Invoices data=InvoicesDaoFactory.create().findByDynamicWhere("id = (select invoice_id from invoice_line where code=?)", new Object[]{request.getParameter("code")})[0];
+		Invoices data=InvoicesDaoFactory.create().findByDynamicWhere("id IN (select invoice_id from invoice_line where code=?) AND is_trx=0", new Object[]{request.getParameter("code")})[0];
 		return data;
 	}
 
@@ -226,6 +231,55 @@ public class X_Invoices implements I_Invoice{
 			throws InvoicesDaoException {
 		// TODO Auto-generated method stub
 		return new Gson().toJson(getInvoice(request));
+	}
+
+	@Override
+	public Patti[] listPatti(HttpServletRequest request) throws PattiDaoException {
+		// TODO Auto-generated method stub
+		Patti[] data=PattiDaoFactory.create().findAll();
+		return data;
+	}
+
+	@Override
+	public PattiLines[] PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException {
+		// TODO Auto-generated method stub
+		PattiLines[] data=PattiLinesDaoFactory.create().findWherePattiIdEquals(Integer.parseInt(request.getParameter("pattiId")));
+		return data;
+	}
+
+	@Override
+	public String ajax_PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(PattiLine(request));
+	}
+
+	@Override
+	public void updatePattiLine(HttpServletRequest request)
+			throws PattiLinesDaoException {
+		// TODO Auto-generated method stub
+		
+		JSONArray data=new JSONArray(request.getParameter("data"));
+		for(int i=0;i<data.length();i++){
+			JSONObject obj=data.getJSONObject(i);
+			PattiLinesDaoFactory.create().delete(new PattiLinesPk(obj.getInt("id")));
+
+			PattiLines dto=new PattiLines();
+			dto.setActualCost(obj.getDouble("actualCost"));
+			dto.setActualQuantity(obj.getInt("actualQuantity"));
+			dto.setAvgCost(obj.getDouble("avgCost"));
+			dto.setAvgQuantity(obj.getInt("avgQuantity"));
+			dto.setCode(obj.getString("code"));
+			dto.setCommissionPercent(obj.getDouble("commissionPercent"));
+			dto.setCooli(obj.getDouble("cooli"));
+			dto.setLoory(obj.getDouble("loory"));
+			dto.setPattiId((int)request.getAttribute("pk"));
+			dto.setBalance(obj.getDouble("balance"));
+			dto.setBpId(obj.getInt("bpId"));
+			PattiLinesDaoFactory.create().insert(dto);
+			
+			
+		}
+		
 	}
 
 }

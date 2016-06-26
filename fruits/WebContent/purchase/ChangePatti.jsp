@@ -39,8 +39,17 @@
 
                     	<table>
                     		<tr>
-                    			<td>Generate Patti</td>
-                    			
+                    			<td>Change Patti</td>
+                    			<td>
+                    				<div class="select-style">
+                           						<select name="pattiId" id="pattiId" onchange="pattiDetail(this.value)">
+                           							<option>Select Patti</option>
+				                        				<c:forEach items="${patti }" var="p">
+				                        					<option value="${p.id }">${p.id }</option>
+				                        				</c:forEach>
+                           						</select>
+                           			</div>
+                    			</td>
                     		
                     		</tr>
                     	</table>
@@ -61,37 +70,14 @@
 	                            		<th>Cooli</th>
 	                            		<th>Lorry charges</th>
 	                            		<th>Balance</th>
-	                            		<th>--</th>
 	                            	</thead>
 	                            	<tbody>
-	                            		<tr id="1">
-	                            			<td>
-	                            				<div class="select-style">
-	                            				
-		                            				<select name="itemId" onchange="getInvoicePurchaser(this.value,1);getItemActualCost(this.value,1);getAvg(this.value,1);balance(1)" id="itemId">
-		                                        		<option>Select Fruit</option>
-		                                        		<c:forEach items="${ItemData }" var="c">
-		                                        			<option value="${c.id }">${c.code }</option>
-		                                        		</c:forEach>
-		                                        	</select>
-	                                        	</div>
-	                            			</td>
-	                            			<td><input type="hidden" id="purchaser_1" name="purchaser"><input type="text" name="avgCost" id="avgCost_1" style="width: 50px"/></td>
-	                            			<td><input type="text" name="avgQuantity" id="avgQuantity_1" style="width: 50px"/></td>
-	                            			<td><input type="text" name="actualCost" id="actualCost_1" style="width: 50px;color:red" readonly="readonly"/></td>
-	                            			<td><input type="text" name="actualQuantity" id="actualQuantity_1" style="width: 50px;color:red" readonly="readonly"/></td>
-	                            			<td><input type="text" name="commissionPercent" id="commissionPercent_1" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="cooli" id="cooli_1" style="width: 50px" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="lorryCharges" id="lorryCharges_1" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="balance" id="balance_1" style="width: 50px;color:green" readonly="readonly"/></td>
-	                            			<td><a href="javascript:removeRow(1)">remove</a></td>
-	                            		</tr>
+	                            		
 	                            	</tbody>
                                 </table>
                                 </div>
                                 <div>
-                                	<input type="button" value="New row" class="button-style" onclick="addNewRow()"/>
-                                	<input type="button" value="Save" class="button-style" onclick="saveData()"/>
+                                	<input type="button" value="Update" class="button-style" onclick="saveData()"/>
                                 </div>
                                 
                                 
@@ -127,25 +113,22 @@ function getItemActualCost(id,index){
 
 var lastID=1;
 
-function addNewRow(){
+function parseRows(JSON){
 	lastID=lastID+1;
-	var fruit="<div class='select-style'><select name='itemId' onchange='getInvoicePurchaser(this.value,"+lastID+");getItemActualCost(this.value,"+lastID+");getAvg(this.value,"+lastID+");balance("+lastID+")' id='itemId'><option>Select Fruit</option>";
-	for (var key in dict) {
-		fruit=fruit+"<option value='"+dict[key].id+"'>"+dict[key].code+"</option>";
+	for(var i=0;i<JSON.length;i++){
+		var fruit='<input type="hidden" value="'+JSON[i].id+'" name="id"/><input type="text"  name="code" value="'+JSON[i].code+'" readonly="readonly"/>';
+		var purchaser='<input type="hidden" id="purchaser_'+lastID+'" name="purchaser" value="'+JSON[i].bpId+'"/>';
+		var avgCost='<input type="text" name="avgCost" id="avgCost_'+lastID+'" style="width: 50px" value="'+JSON[i].avgCost+'"/>';
+		var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px" value="'+JSON[i].avgQuantity+'"/>';
+		var actualCost='<input type="text" name="actualCost" id="actualCost_'+lastID+'" style="width: 50px;color:red" readonly="readonly" value="'+JSON[i].actualCost+'"/>';
+		var actualQuantity='<input type="text" name="actualQuantity" id="actualQuantity_'+lastID+'" style="width: 50px;color:red" readonly="readonly" value="'+JSON[i].actualQuantity+'"/>';
+		var commissionPercent='<input type="text" name="commissionPercent" id="commissionPercent_'+lastID+'" style="width: 50px" onkeyup="balance('+lastID+')" value="'+JSON[i].commissionPercent+'"/>';
+		var cooli='<input type="text" name="cooli" id="cooli_'+lastID+'" style="width: 50px" style="width: 50px"  onkeyup="balance('+lastID+')" value="'+JSON[i].loory+'"/>';
+		var lorryCharges='<input type="text" name="lorryCharges" id="lorryCharges_'+lastID+'" style="width: 50px"  onkeyup="balance('+lastID+')" value="'+JSON[i].cooli+'"/>';
+		var balance='<input type="text" name="balance" id="balance_'+lastID+'" style="width: 50px;color:green" readonly="readonly" value="'+JSON[i].balance+'"/>';
+		$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+commissionPercent+'</td><td>'+cooli+'</td><td>'+lorryCharges+'</td><td>'+balance+'</td></tr>');
 	}
-	fruit=fruit+"</select></div>";
-	var purchaser='<input type="hidden" id="purchaser_'+lastID+'" name="purchaser"/>';
-	var avgCost='<input type="text" name="avgCost" id="avgCost_'+lastID+'" style="width: 50px"/>';
-	var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px"/>';
-	var actualCost='<input type="text" name="actualCost" id="actualCost_'+lastID+'" style="width: 50px;color:red" readonly="readonly"/>';
-	var actualQuantity='<input type="text" name="actualQuantity" id="actualQuantity_'+lastID+'" style="width: 50px;color:red" readonly="readonly"/>';
-	var commissionPercent='<input type="text" name="commissionPercent" id="commissionPercent_'+lastID+'" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var cooli='<input type="text" name="cooli" id="cooli_'+lastID+'" style="width: 50px" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var lorryCharges='<input type="text" name="lorryCharges" id="lorryCharges_'+lastID+'" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var balance='<input type="text" name="balance" id="balance_'+lastID+'" style="width: 50px;color:green" readonly="readonly"/>';
-	var deleteBtn='<a href="javascript:removeRow('+lastID+')">remove</a>';
-	var control=deleteBtn;
-	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+commissionPercent+'</td><td>'+cooli+'</td><td>'+lorryCharges+'</td><td>'+balance+'</td><td>'+control+'</td></tr>');
+	
 }
 
 
@@ -163,12 +146,13 @@ function validateTable(){
         var lorryCharges = $this.find("input[name=lorryCharges]").val();
         var balance = $this.find("input[name=balance]").val();
         var itemId=$this.find("select[id=itemId]").val()
+        var id=$this.find("input[name=id]").val();
         
         if(typeof purchaser!=='undefined' && purchaser.trim().length>0 ){
         	rowData.push({
               "code":dict[parseInt(itemId)].code,
               "balance":parseFloat(balance),
-              "loory":parseFloat(lorryCharges),
+              "lorryCharges":parseFloat(lorryCharges),
               "cooli":parseFloat(cooli),
               "commissionPercent":parseFloat(commissionPercent),
               "actualQuantity":parseInt(actualQuantity),
@@ -176,6 +160,7 @@ function validateTable(){
               "avgQuantity":parseInt(avgQuantity),
               "avgCost":parseFloat(avgCost),
               "bpId":parseInt(purchaser),
+              "id":parseInt(id)
           });
         }
   });
@@ -184,21 +169,20 @@ function validateTable(){
 	
 }
 
-function getInvoicePurchaser(id,index){
+function pattiDetail(id){
 	$.ajax({
-		url : "ajax_getInvoicePurchaser",
+		url : "ajax_pattiDetails",
 		type : "POST",
 		dataType : "json",
 		async:false,
 		data : {
-			code :dict[id].code
+			pattiId :id
 			
 		},
 		success : function(responseText) {
-				console.log(responseText);
 				// render return json
-				$('#purchaser_'+index).val(responseText.bpId);
-
+				console.log(responseText);
+				parseRows(responseText);
 			
 		},
 		error : function(xhr, errmsg, err) {

@@ -106,6 +106,26 @@ public class PattiLines implements Serializable
 	 */
 	protected boolean pattiIdNull = true;
 
+	/** 
+	 * This attribute maps to the column balance in the patti_lines table.
+	 */
+	protected double balance;
+
+	/** 
+	 * This attribute represents whether the primitive attribute balance is null.
+	 */
+	protected boolean balanceNull = true;
+
+	/** 
+	 * This attribute maps to the column bp_id in the patti_lines table.
+	 */
+	protected int bpId;
+
+	/** 
+	 * This attribute represents whether the primitive attribute bpId is null.
+	 */
+	protected boolean bpIdNull = true;
+
 	/**
 	 * Method 'PattiLines'
 	 * 
@@ -483,6 +503,88 @@ public class PattiLines implements Serializable
 	}
 
 	/**
+	 * Method 'getBalance'
+	 * 
+	 * @return double
+	 */
+	public double getBalance()
+	{
+		return balance;
+	}
+
+	/**
+	 * Method 'setBalance'
+	 * 
+	 * @param balance
+	 */
+	public void setBalance(double balance)
+	{
+		this.balance = balance;
+		this.balanceNull = false;
+	}
+
+	/**
+	 * Method 'setBalanceNull'
+	 * 
+	 * @param value
+	 */
+	public void setBalanceNull(boolean value)
+	{
+		this.balanceNull = value;
+	}
+
+	/**
+	 * Method 'isBalanceNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isBalanceNull()
+	{
+		return balanceNull;
+	}
+
+	/**
+	 * Method 'getBpId'
+	 * 
+	 * @return int
+	 */
+	public int getBpId()
+	{
+		return bpId;
+	}
+
+	/**
+	 * Method 'setBpId'
+	 * 
+	 * @param bpId
+	 */
+	public void setBpId(int bpId)
+	{
+		this.bpId = bpId;
+		this.bpIdNull = false;
+	}
+
+	/**
+	 * Method 'setBpIdNull'
+	 * 
+	 * @param value
+	 */
+	public void setBpIdNull(boolean value)
+	{
+		this.bpIdNull = value;
+	}
+
+	/**
+	 * Method 'isBpIdNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isBpIdNull()
+	{
+		return bpIdNull;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -575,6 +677,22 @@ public class PattiLines implements Serializable
 			return false;
 		}
 		
+		if (balance != _cast.balance) {
+			return false;
+		}
+		
+		if (balanceNull != _cast.balanceNull) {
+			return false;
+		}
+		
+		if (bpId != _cast.bpId) {
+			return false;
+		}
+		
+		if (bpIdNull != _cast.bpIdNull) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -612,6 +730,11 @@ public class PattiLines implements Serializable
 		_hashCode = 29 * _hashCode + (cooliNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + pattiId;
 		_hashCode = 29 * _hashCode + (pattiIdNull ? 1 : 0);
+		long temp_balance = Double.doubleToLongBits(balance);
+		_hashCode = 29 * _hashCode + (int) (temp_balance ^ (temp_balance >>> 32));
+		_hashCode = 29 * _hashCode + (balanceNull ? 1 : 0);
+		_hashCode = 29 * _hashCode + bpId;
+		_hashCode = 29 * _hashCode + (bpIdNull ? 1 : 0);
 		return _hashCode;
 	}
 
@@ -644,6 +767,8 @@ public class PattiLines implements Serializable
 		ret.append( ", loory=" + loory );
 		ret.append( ", cooli=" + cooli );
 		ret.append( ", pattiId=" + pattiId );
+		ret.append( ", balance=" + balance );
+		ret.append( ", bpId=" + bpId );
 		return ret.toString();
 	}
 
