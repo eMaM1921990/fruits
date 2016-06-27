@@ -1,5 +1,7 @@
 package com.app.i.business;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import net.sf.jasperreports.engine.JRException;
@@ -18,7 +20,7 @@ import com.app.dal.exceptions.PattiLinesDaoException;
 
 public interface I_Invoice {
 
-	public String newInvoice(HttpServletRequest request) throws InvoicesDaoException, JRException;
+	public String newInvoice(HttpServletRequest request) throws InvoicesDaoException, JRException, SQLException;
 	public void newInvoiceLine(HttpServletRequest request) throws InvoiceLineDaoException;
 	public InvoiceVw[] previousInvoices(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
 	public String ajax_previousInvoices(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
@@ -38,5 +40,5 @@ public interface I_Invoice {
 	public PattiLines[] PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException;
 	public String ajax_PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException;
 	public void updatePattiLine(HttpServletRequest request) throws PattiLinesDaoException;
-	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException;
+	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException, SQLException;
 }

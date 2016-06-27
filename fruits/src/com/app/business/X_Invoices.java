@@ -1,5 +1,6 @@
 package com.app.business;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,7 @@ import com.google.gson.Gson;
 public class X_Invoices implements I_Invoice{
 
 	@Override
-	public String newInvoice(HttpServletRequest request) throws InvoicesDaoException, JRException {
+	public String newInvoice(HttpServletRequest request) throws InvoicesDaoException, JRException, SQLException {
 		// TODO Auto-generated method stub
 		Invoices dto=new Invoices();
 		dto.setBpId(Integer.parseInt(request.getParameter("bpId")));
@@ -88,7 +89,7 @@ public class X_Invoices implements I_Invoice{
 		
 		//print PDf
 		if(dto.getIsTrx()==0){
-			return printPDF(pk.getId(), "purchase_bill", request);
+			return printPDF(pk.getId(), "sale_bill", request);
 		}else{
 			if(Integer.parseInt(request.getParameter("token"))==0){
 				return printPDF(pk.getId(), "small_token", request);
@@ -308,10 +309,10 @@ public class X_Invoices implements I_Invoice{
 	}
 
 	@Override
-	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException {
+	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException, SQLException {
 		// TODO Auto-generated method stub
 		Map<String, Object> param=new HashMap<String, Object>();
-		param.put("invoiceId", invoiceId);
+		param.put("invoice_id", invoiceId);
 		String reportFullPath="/com/app/business/ticket/"+reportName+".jrxml";
 		JasperDesign jd=null;
 	    JasperReport js=null;
@@ -321,6 +322,7 @@ public class X_Invoices implements I_Invoice{
 	     jp = JasperFillManager.fillReport(js, param, ResourceManager.getConnection());
 	     JRExporter exporter = null;
 	     String outputFile = request.getServletContext().getRealPath("/tmp") + "/" + invoiceId + ".pdf";
+	     System.out.println(outputFile);
 	     exporter = (JRExporter) new JRPdfExporter();
 	     exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
 	     exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outputFile);

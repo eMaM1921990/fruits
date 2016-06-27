@@ -101,6 +101,8 @@
         <div id="footer" class="container">
             <p>&copy; All rights reserved. Design by SL Fruits</p>
         </div>
+        <iframe  src="" id="pdfDocument" style="display: none;" ></iframe>
+        
     </body>
 </html>
 <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
@@ -139,7 +141,12 @@ function saveToken(){
 				$('#msg_error').html(responseText);
 			}else{
 				$('#suc').removeAttr('style');
-				$('#msg_suc').html(responseText);
+				$('#msg_suc').html(responseText.split(":")[0]);
+				
+				var doc=$('#pdfDocument').attr('src',"tmp/"+responseText.split(":")[1]);
+				$('#pdfDocument').load(function() {
+					printTrigger('pdfDocument');
+			      });
 
 			}
 		},
@@ -152,5 +159,14 @@ function saveToken(){
 $( document ).ready(function() {
 	convertToDic(${ItemDataJSON});
 });
+
+
+function printTrigger(elementId) {
+
+	var getMyFrame = document.getElementById(elementId);
+    getMyFrame.focus();
+    getMyFrame.contentWindow.print();
+
+}
 
 </script>
