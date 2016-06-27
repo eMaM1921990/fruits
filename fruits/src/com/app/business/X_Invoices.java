@@ -1,8 +1,21 @@
 package com.app.business;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,13 +44,14 @@ import com.app.dal.factory.InvoiceVwDaoFactory;
 import com.app.dal.factory.InvoicesDaoFactory;
 import com.app.dal.factory.PattiDaoFactory;
 import com.app.dal.factory.PattiLinesDaoFactory;
+import com.app.dal.jdbc.ResourceManager;
 import com.app.i.business.I_Invoice;
 import com.google.gson.Gson;
 
 public class X_Invoices implements I_Invoice{
 
 	@Override
-	public void newInvoice(HttpServletRequest request) throws InvoicesDaoException {
+	public String newInvoice(HttpServletRequest request) throws InvoicesDaoException, JRException {
 		// TODO Auto-generated method stub
 		Invoices dto=new Invoices();
 		dto.setBpId(Integer.parseInt(request.getParameter("bpId")));
@@ -69,6 +83,17 @@ public class X_Invoices implements I_Invoice{
 			} catch (BusinessPartnerDaoException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+		
+		//print PDf
+		if(dto.getIsTrx()==0){
+			return printPDF(pk.getId(), "purchase_bill", request);
+		}else{
+			if(Integer.parseInt(request.getParameter("token"))==0){
+				return printPDF(pk.getId(), "small_token", request);
+			}else{
+				return printPDF(pk.getId(), "sale_bill", request);
 			}
 		}
 		
@@ -279,6 +304,30 @@ public class X_Invoices implements I_Invoice{
 			
 			
 		}
+		
+	}
+
+	@Override
+	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException {
+		// TODO Auto-generated method stub
+		Map<String, Object> param=new HashMap<String, Object>();
+		param.put("invoiceId", invoiceId);
+		String reportFullPath="/com/app/business/ticket/"+reportName+".jrxml";
+		JasperDesign jd=null;
+	    JasperReport js=null;
+	    JasperPrint jp=null;
+	    jd = JRXmlLoader.load(getClass().getResourceAsStream(reportFullPath));
+	     js = JasperCompileManager.compileReport(jd);	 
+	     jp = JasperFillManager.fillReport(js, param, ResourceManager.getConnection());
+	     JRExporter exporter = null;
+	     String outputFile = request.getServletContext().getRealPath("/tmp") + "/" + invoiceId + ".pdf";
+	     exporter = (JRExporter) new JRPdfExporter();
+	     exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
+	     exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outputFile);
+	     exporter.exportReport();
+	    
+	     return invoiceId + ".pdf";
+		
 		
 	}
 

@@ -126,6 +126,7 @@ function saveToken(){
 		dataType : "text",
 		async:false,
 		data : {
+			token:0,
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
 			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
