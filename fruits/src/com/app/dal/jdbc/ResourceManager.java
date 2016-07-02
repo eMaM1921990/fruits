@@ -5,10 +5,10 @@ import java.sql.*;
 public class ResourceManager
 {
     private static String JDBC_DRIVER   = "com.mysql.jdbc.Driver";
-    private static String JDBC_URL      ="jdbc:mysql://localhost:3306/fruits";
+    private static String JDBC_URL      ="jdbc:mysql://mysql53478-rsaily.jelastic.elastx.net/fruits"; //mysql53478-rsaily.jelastic.elastx.net
 
     private static String JDBC_USER     = "root";
-    private static String JDBC_PASSWORD = "admin";
+    private static String JDBC_PASSWORD = "DVXsek46471";
 
     private static Driver driver = null;
 

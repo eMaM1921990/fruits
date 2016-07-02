@@ -135,7 +135,7 @@ function savePurchase(){
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
 			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
-			data:"[{'itemId':"+$('#itemId').val()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+",'type':"+$('#type').val()+",'code':"+dict[$('#itemId').val()].code.toString()+"}]"
+			data:"[{'itemId':"+$('#itemId').val()+",'id':"+$('#itemId').val()+",'name':"+$('#itemId option:selected').text()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+",'type':"+$('#type').val()+",'code':"+dict[$('#itemId').val()].code.toString()+",'purchase':"+$('#bpId option:selected').text()+",'stockId':1}]"
 			
 		},
 		success : function(responseText) {

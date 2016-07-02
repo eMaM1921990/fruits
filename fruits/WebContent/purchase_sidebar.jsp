@@ -10,5 +10,6 @@
 		<li><a href="addCustomer">Pay Purchaser</a></li>
 		<li><a href="addPurchaser">Add Purchase Party</a></li>
 		<li><a href="addBank">Add Party Bank Account details</a></li>
+		<li><a href="addFruits">Add Fruits</a></li>
 	</ul>
 </div>

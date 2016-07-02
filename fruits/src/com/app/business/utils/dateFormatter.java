@@ -23,6 +23,11 @@ public class dateFormatter {
         
 	}
 	
+	public static String getDateINDDMM(){
+		SimpleDateFormat format = new SimpleDateFormat("ddMM");
+		return format.format(new Date());
+	}
+	
 	public Date getIncrementDate(Date initDate,int incrementMonth){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(initDate);
