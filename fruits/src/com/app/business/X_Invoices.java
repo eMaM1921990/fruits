@@ -113,7 +113,10 @@ public class X_Invoices implements I_Invoice{
 			dto.setItemId(obj.getInt("itemId"));
 			dto.setPrice(obj.getDouble("price"));
 			dto.setQuantity(obj.getDouble("quantity"));
-			dto.setCode(new X_Items().setCode(obj.getString("purchase"), obj.getString("name"), obj.getString("type")));
+			if(obj.has("purchase")){
+				dto.setCode(new X_Items().setCode(obj.getString("purchase"), obj.getString("name"), obj.getString("type")));
+			}
+			
 			// for purchasee
 			if(Short.parseShort(request.getParameter("isTrx"))==0){
 				dto.setType(request.getParameter("type"));
