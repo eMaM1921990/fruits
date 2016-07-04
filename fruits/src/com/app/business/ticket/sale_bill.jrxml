@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sale_bill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="391d09f6-fbd2-4d21-ae9f-0835c0e24949">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="82"/>
+	<property name="ireport.y" value="61"/>
 	<parameter name="invoice_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -90,42 +90,42 @@ false if purchase]]></fieldDescription>
 			<textField>
 				<reportElement x="73" y="0" width="100" height="20" uuid="434d0135-521e-4350-8856-969e515978a9"/>
 				<textElement>
-					<font fontName="Arial" size="12"/>
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="73" y="20" width="482" height="20" uuid="82becd1b-20f0-4084-b3bc-ac5efafca387"/>
 				<textElement>
-					<font fontName="Arial" size="12"/>
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bp_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="407" y="0" width="148" height="20" uuid="4afdc2f9-ea55-4d2b-91e6-577e6787663c"/>
 				<textElement>
-					<font fontName="Arial" size="12"/>
+					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="73" height="20" uuid="c2f71456-456d-4a0d-84dd-415c8ecd6324"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="20" width="73" height="20" uuid="356b6d73-e72f-4f9d-acb2-f238e53f3e10"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mr. & Mrs]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="355" y="0" width="52" height="20" uuid="90a119ac-08c4-4410-918b-d17351a8cf8f"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Date]]></text>
 			</staticText>
@@ -136,35 +136,35 @@ false if purchase]]></fieldDescription>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="100" height="20" backcolor="#F29D15" uuid="f4f1368c-b1fe-4e40-a2c3-dbd27345bdb3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Code]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="100" y="0" width="213" height="20" backcolor="#F29D15" uuid="68a6eaed-f032-4122-9b24-3c59f447c354"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Type]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="313" y="0" width="61" height="20" backcolor="#F29D15" uuid="342b435e-67bb-4572-a5d6-f6d584e8ca18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="374" y="0" width="64" height="20" backcolor="#F29D15" uuid="0c1a6124-a7fa-42ef-97e6-51b75f1728ef"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Price]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="438" y="0" width="117" height="20" backcolor="#F29D15" uuid="07c8dad7-b33d-4203-9439-adf173e164a6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total price]]></text>
 			</staticText>
@@ -175,35 +175,35 @@ false if purchase]]></fieldDescription>
 			<textField>
 				<reportElement x="0" y="0" width="100" height="20" uuid="2cd855ff-e0d7-4ceb-ad74-447ed70350a4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="0" width="213" height="20" uuid="47706e5d-37e0-4a20-83dc-0e984149dfe8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="313" y="0" width="61" height="20" uuid="57a6391b-8266-4e1b-954b-23276c2c4c49"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="374" y="0" width="64" height="20" uuid="e8b1f3e7-353d-4801-91af-950880db7f3e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="438" y="0" width="117" height="20" uuid="ab4cc242-603f-4816-b1a4-efbf3463d7f8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10"/>
+					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}*$F{price}]]></textFieldExpression>
 			</textField>

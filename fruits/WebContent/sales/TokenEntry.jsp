@@ -69,13 +69,15 @@
 	                                        	<select name="itemId" onchange="getItemPrice(this.value)" id="itemId">
 	                                        		<option>Select Fruit</option>
 	                                        		<c:forEach items="${ItemData }" var="c">
-	                                        			<option value="${c.id }">${c.code }</option>
+	                                        			<option value="${c.id }">${c.code } | ${c.name } | ${c.type }</option>
 	                                        		</c:forEach>
 	                                        	</select>
                                         	</div>
                                         </td>
                                             
                                     </tr>
+                                   
+                                    
                                     <tr>
                                         <td>Quantity*:</td>
                                         <td><input type="text" name="quantity" id="quantity" class="inputs" placeholder="Quantity"/></td>		
