@@ -29,6 +29,7 @@ import com.app.dal.dto.InvoiceLinePk;
 import com.app.dal.dto.InvoiceVw;
 import com.app.dal.dto.Invoices;
 import com.app.dal.dto.InvoicesPk;
+import com.app.dal.dto.Items;
 import com.app.dal.dto.Patti;
 import com.app.dal.dto.PattiLines;
 import com.app.dal.dto.PattiLinesPk;
@@ -37,12 +38,14 @@ import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.dal.exceptions.InvoiceVwDaoException;
 import com.app.dal.exceptions.InvoicesDaoException;
+import com.app.dal.exceptions.ItemsDaoException;
 import com.app.dal.exceptions.PattiDaoException;
 import com.app.dal.exceptions.PattiLinesDaoException;
 import com.app.dal.factory.BusinessPartnerDaoFactory;
 import com.app.dal.factory.InvoiceLineDaoFactory;
 import com.app.dal.factory.InvoiceVwDaoFactory;
 import com.app.dal.factory.InvoicesDaoFactory;
+import com.app.dal.factory.ItemsDaoFactory;
 import com.app.dal.factory.PattiDaoFactory;
 import com.app.dal.factory.PattiLinesDaoFactory;
 import com.app.dal.jdbc.ResourceManager;
@@ -119,9 +122,25 @@ public class X_Invoices implements I_Invoice{
 			
 			// for purchasee
 			if(Short.parseShort(request.getParameter("isTrx"))==0){
-				dto.setType(request.getParameter("type"));
+				dto.setType(obj.getString("type"));
 			}
 			InvoiceLineDaoFactory.create().insert(dto);
+			
+			if(request.getParameterMap().containsKey("stockPurchase")){
+				Items i_dto=new Items();
+				i_dto.setCode(dto.getCode());
+				i_dto.setPrice(dto.getPrice());
+				i_dto.setQuantity(dto.getQuantity());
+				i_dto.setType(dto.getType());
+				i_dto.setName(obj.getString("name"));
+				try {
+					ItemsDaoFactory.create().update(i_dto.createPk(), i_dto);
+				} catch (ItemsDaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 	}

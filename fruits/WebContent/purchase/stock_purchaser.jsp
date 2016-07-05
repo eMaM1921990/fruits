@@ -134,6 +134,7 @@ function savePurchase(){
 		data : {
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
+			stockPurchase:1,
 			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
 			data:"[{'isTrx':"+$('#isTrx').val()+",'itemId':"+$('#itemId').val()+",'id':"+$('#itemId').val()+",'name':"+$('#itemId option:selected').text()+",'quantity':"+$('#quantity').val()+",'price':"+parseFloat($('#price').val())+",'type':"+$('#type').val()+",'code':"+dict[$('#itemId').val()].code.toString()+",'purchase':"+$('#bpId option:selected').text()+",'stockId':1}]"
 			
