@@ -173,6 +173,7 @@ function saveData(){
 			token:1,
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
+			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
 			data:JSON.stringify(validateTable())
 			
 		},
