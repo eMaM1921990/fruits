@@ -93,7 +93,7 @@
                                 </div>
                                 
                                 
-                                <input type="hidden" name="isTrx" value="0" id="isTrx"/>
+                                <input type="hidden" name="isTrx" value="1" id="isTrx"/>
                     </div>
                     <%@ include file="../sales_sidebar.jsp"%>
 

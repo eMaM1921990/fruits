@@ -123,7 +123,8 @@ public class X_Invoices implements I_Invoice{
 			
 			// for purchasee
 			if(Short.parseShort(request.getParameter("isTrx"))==0){
-				dto.setType(obj.getString("type"));
+					dto.setType(obj.getString("type"));
+				
 			}
 			InvoiceLineDaoFactory.create().insert(dto);
 			System.out.println("contain------- "+request.getParameterMap().containsKey("stockPurchase"));
