@@ -50,12 +50,12 @@ public class savePurchase extends HttpServlet {
 		try {
 			
 			business.newInvoice(request);
-			try {
-				ibusiness.update(request);
-			} catch (ItemsDaoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				ibusiness.update(request);
+//			} catch (ItemsDaoException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			response.getWriter().write("Data saved successfuly");
 		} catch (InvoicesDaoException | JRException | SQLException e) {
 			// TODO Auto-generated catch block

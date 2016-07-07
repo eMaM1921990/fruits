@@ -109,6 +109,7 @@ public class X_Invoices implements I_Invoice{
 		
 		System.out.println(request.getParameter("data"));
 		JSONArray arr=new JSONArray(request.getParameter("data"));
+		
 		for(int i=0;i<arr.length();i++){
 			JSONObject obj=arr.getJSONObject(i);
 			InvoiceLine dto=new InvoiceLine();
@@ -125,14 +126,19 @@ public class X_Invoices implements I_Invoice{
 				dto.setType(obj.getString("type"));
 			}
 			InvoiceLineDaoFactory.create().insert(dto);
-			
+			System.out.println("contain------- "+request.getParameterMap().containsKey("stockPurchase"));
 			if(request.getParameterMap().containsKey("stockPurchase")){
 				Items i_dto=new Items();
 				i_dto.setCode(dto.getCode());
-				i_dto.setPrice(dto.getPrice());
-				i_dto.setQuantity(dto.getQuantity());
-				i_dto.setType(dto.getType());
+				System.out.println("Price---->"+obj.getDouble("price"));
+				i_dto.setPrice(obj.getDouble("price"));
+				i_dto.setQuantity(obj.getDouble("quantity"));
+				System.out.println("type====>"+obj.getString("type"));
+				i_dto.setType(obj.getString("type"));
 				i_dto.setName(obj.getString("name"));
+				i_dto.setId(obj.getInt("itemId"));
+				
+				
 				try {
 					ItemsDaoFactory.create().update(i_dto.createPk(), i_dto);
 				} catch (ItemsDaoException e) {
