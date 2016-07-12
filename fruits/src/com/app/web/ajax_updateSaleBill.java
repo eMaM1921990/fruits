@@ -14,16 +14,16 @@ import com.app.dal.exceptions.InvoiceLineDaoException;
 import com.app.i.business.I_Invoice;
 
 /**
- * Servlet implementation class ajax_removePurchase
+ * Servlet implementation class ajax_updateSaleBill
  */
-@WebServlet("/ajax_removePurchase")
-public class ajax_removePurchase extends HttpServlet {
+@WebServlet("/ajax_updateSaleBill")
+public class ajax_updateSaleBill extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ajax_removePurchase() {
+    public ajax_updateSaleBill() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,12 +42,15 @@ public class ajax_removePurchase extends HttpServlet {
 		// TODO Auto-generated method stub
 		I_Invoice business=new X_Invoices();
 		try {
-			business.deletePurchase(request);
-			response.getWriter().write("Record deleted");
-		} catch (InvoiceLineDaoException | NumberFormatException | BusinessPartnerDaoException e) {
+			business.updateInvoiceLine(request);
+			response.getWriter().write("Data updated successfully");
+		} catch (NumberFormatException | InvoiceLineDaoException
+				| BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			response.getWriter().write("[Error] cause :-"+e.getMessage());
+			response.getWriter().write("[Error] during update cause :"+e.getMessage());
+			
+			
 		}
 	}
 

@@ -24,7 +24,7 @@ public interface I_Invoice {
 	public void newInvoiceLine(HttpServletRequest request) throws InvoiceLineDaoException;
 	public InvoiceVw[] previousInvoices(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
 	public String ajax_previousInvoices(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
-	public void deletePurchase(HttpServletRequest request) throws InvoiceLineDaoException;
+	public void deletePurchase(HttpServletRequest request) throws InvoiceLineDaoException, NumberFormatException, BusinessPartnerDaoException;
 	public InvoiceVw[] getLastDateInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
 	public String ajax_getLastDateInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
 	public InvoiceVw[] getTransaction(HttpServletRequest request) throws InvoiceVwDaoException;
@@ -41,4 +41,5 @@ public interface I_Invoice {
 	public String ajax_PattiLine(HttpServletRequest request) throws NumberFormatException, PattiLinesDaoException;
 	public void updatePattiLine(HttpServletRequest request) throws PattiLinesDaoException;
 	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException, SQLException;
+	public void updateInvoiceLine(HttpServletRequest request) throws NumberFormatException, InvoiceLineDaoException, BusinessPartnerDaoException;
 }

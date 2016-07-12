@@ -8,22 +8,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.app.business.X_Invoices;
+import com.app.business.X_BP;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
-import com.app.dal.exceptions.InvoiceLineDaoException;
-import com.app.i.business.I_Invoice;
+import com.app.i.business.I_BP;
 
 /**
- * Servlet implementation class ajax_removePurchase
+ * Servlet implementation class addFruits
  */
-@WebServlet("/ajax_removePurchase")
-public class ajax_removePurchase extends HttpServlet {
+@WebServlet("/addFruits")
+public class addFruits extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ajax_removePurchase() {
+    public addFruits() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,6 +32,7 @@ public class ajax_removePurchase extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		view(request, response);
 	}
 
 	/**
@@ -40,15 +40,14 @@ public class ajax_removePurchase extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		I_Invoice business=new X_Invoices();
-		try {
-			business.deletePurchase(request);
-			response.getWriter().write("Record deleted");
-		} catch (InvoiceLineDaoException | NumberFormatException | BusinessPartnerDaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			response.getWriter().write("[Error] cause :-"+e.getMessage());
-		}
+		view(request, response);
 	}
+	
+	protected void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String defaultURL="/purchase/addFruits.jsp";
+		
+		request.getRequestDispatcher(defaultURL).include(request, response);
+	}
+
 
 }

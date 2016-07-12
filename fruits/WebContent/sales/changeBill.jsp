@@ -134,8 +134,8 @@ function addNewRow(Json){
 	for(var i=0;i<Json.length;i++){
 		lastID=lastID+1;
 		var fruit=Json[i].name;
-		var quantity='<input type="text" name="quantity" value="'+Json[i].quantity+'" onkeyup="showUpdate('+Json[i].id+')"/>';
-		var price='<input type="text" name="price" id="price_'+lastID+'" value="'+Json[i].price+'" onkeyup="showUpdate('+Json[i].id+')"/>';
+		var quantity='<input type="text" name="quantity" value="'+Json[i].quantity+'" onkeyup="showUpdate('+Json[i].id+')" id="quantity_'+Json[i].id+'"/>';
+		var price='<input type="hidden" id="old_price_'+Json[i].id+'" value="'+Json[i].price+'"/><input type="text" name="price" id="price_'+Json[i].id+'" value="'+Json[i].price+'" onkeyup="showUpdate('+Json[i].id+')"/>';
 		var deleteBtn='<a href="javascript:removePurchase('+Json[i].id+')">remove</a>';
 		var updateBtn='<a href="javascript:update('+Json[i].id+')" style="color:chartreuse;display:none" id="update_'+Json[i].id+'">update</a> ';
 		var control=updateBtn+deleteBtn;
@@ -148,6 +148,37 @@ function showUpdate(id){
 	$('#update_'+id).attr('style','color:chartreuse');
 }
 
+function update(id){
+	$.ajax({
+		url : "ajax_updateSaleBill",
+		type : "POST",
+		dataType : "text",
+		async:false,
+		data : {
+			id : id,
+			oldPrice:$('#old_price_'+id).val(),
+			newPrice:$('#price_'+id).val(),
+			Quantity:$('#price_'+id).val(),
+			bpId : $('#bpId').val()
+			
+		},
+		success : function(responseText) {
+			if(responseText.indexOf("[")>-1){
+				$('#error').removeAttr('style');
+				$('#msg_error').html(responseText);
+			}else{
+				$('#suc').removeAttr('style');
+				$('#msg_suc').html(responseText);
+				removeRow(id);
+			}
+			
+		},
+		error : function(xhr, errmsg, err) {
+			console.log(errmsg);
+
+		}
+	});
+}
 
 function removePurchase(id){
 	$.ajax({
@@ -157,6 +188,8 @@ function removePurchase(id){
 		async:false,
 		data : {
 			id : id,
+			balance:$('#price_'+id).val(),
+			bpId : $('#bpId').val()
 			
 		},
 		success : function(responseText) {

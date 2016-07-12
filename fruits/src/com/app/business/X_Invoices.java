@@ -167,10 +167,13 @@ public class X_Invoices implements I_Invoice{
 	}
 
 	@Override
-	public void deletePurchase(HttpServletRequest request) throws InvoiceLineDaoException {
+	public void deletePurchase(HttpServletRequest request) throws InvoiceLineDaoException, NumberFormatException, BusinessPartnerDaoException {
 		// TODO Auto-generated method stub
 		InvoiceLinePk pk=new InvoiceLinePk(Integer.parseInt(request.getParameter("id")));
 		InvoiceLineDaoFactory.create().delete(pk);
+		
+		//update balance
+		updateBalance(Integer.parseInt(request.getParameter("bpId")),(Double.parseDouble(request.getParameter("balance"))*-1) );
 		
 	}
 
@@ -358,6 +361,24 @@ public class X_Invoices implements I_Invoice{
 	     exporter.exportReport();
 	    
 	     return invoiceId + ".pdf";
+		
+		
+	}
+
+	@Override
+	public void updateInvoiceLine(HttpServletRequest request) throws NumberFormatException, InvoiceLineDaoException, BusinessPartnerDaoException {
+		// TODO Auto-generated method stub
+		InvoiceLine dto=InvoiceLineDaoFactory.create().findByPrimaryKey(Integer.parseInt(request.getParameter("id")));
+		dto.setQuantity(Double.parseDouble(request.getParameter("Quantity")));
+		dto.setPrice(Double.parseDouble(request.getParameter("newPrice")));
+		InvoiceLineDaoFactory.create().update(dto.createPk(), dto);
+		
+		//Update balance
+		double oldPrice=Double.parseDouble(request.getParameter("oldPrice"))*dto.getQuantity();
+		double newPrice=dto.getPrice()*dto.getQuantity();
+		updateBalance(Integer.parseInt(request.getParameter("bpId")), newPrice-oldPrice);
+		
+		
 		
 		
 	}
