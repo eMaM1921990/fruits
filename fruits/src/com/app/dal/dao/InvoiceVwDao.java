@@ -55,6 +55,11 @@ public interface InvoiceVwDao
 	public InvoiceVw[] findWhereNameEquals(String name) throws InvoiceVwDaoException;
 
 	/** 
+	 * Returns all rows from the invoice_vw table that match the criteria 'invoice_id = :invoiceId'.
+	 */
+	public InvoiceVw[] findWhereInvoiceIdEquals(int invoiceId) throws InvoiceVwDaoException;
+
+	/** 
 	 * Sets the value of maxRows
 	 */
 	public void setMaxRows(int maxRows);

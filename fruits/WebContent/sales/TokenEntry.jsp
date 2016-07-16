@@ -40,11 +40,11 @@
                      <form action="javascript:saveToken()" name="AddPrintToken" method="post">
                     	<table>
                     		<tr>
-                    			<td>Sales Bill To</td>
+                    			<td>Sales Bill To :</td>
                     			<td>
                     				<div class="select-style">
                     				
-	                    				<select name="bpId" id="bpId">
+	                    				<select name="bpId" id="bpId" onchange="getBalance(this.value)">
 	                        				<option>Select Seller</option>
 	                        				<c:forEach items="${customer }" var="cus">
 	                        					<option value="${cus.id }">${cus.bpName }</option>
@@ -54,6 +54,10 @@
                     			</td>
                     		
                     		</tr>
+                    		<tr>
+                    				<td>Current Balance : </td><td><p id="balance">Rs .0</td>
+                    		</tr>
+                    		
                     	</table>
 
                        
@@ -77,6 +81,10 @@
                                             
                                     </tr>
                                    
+                                   <tr>
+                                        <td>Fruit Name / Type :</td>
+                                        <td><input type="text" name="name" id="name" class="inputs" placeholder="Fruit Name / Type" readonly="readonly"/></td>		
+                                    </tr>
                                     
                                     <tr>
                                         <td>Quantity*:</td>
@@ -119,8 +127,25 @@ function convertToDic(Json){
 
 }
 
+
+var customers=[];
+function CustomerDic(Json){
+	
+	for(var i=0;i<Json.length;i++){
+	
+		CustomerDic[Json[i].id]=Json[i];
+	}
+
+}
+
+function getBalance(id){
+	$('#balance').html('Rs. '+customers[id].balance);
+	
+}
+
 function getItemPrice(id){
 	$('#price').val(dict[id].price);
+	$('#name').val(dict[id].name+" / "+dict[id].type);
 }
 
 function saveToken(){
@@ -160,6 +185,8 @@ function saveToken(){
 }
 $( document ).ready(function() {
 	convertToDic(${ItemDataJSON});
+	CustomerDic(${customerJson});
+	$('#balanceRow').hide();
 });
 
 

@@ -8,5 +8,6 @@
 		<li><a href="lastBillDate">Print Last Date Bill</a></li>
 		<li><a href="getSaleTransaction">Transaction from to date</a></li>
 		<li><a href="addCustomer">Add Seller Party</a></li>
+		<li><a href="Payment">Payment</a></li>
 	</ul>
 </div>

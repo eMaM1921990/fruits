@@ -44,6 +44,11 @@ public interface PattiLinesDao
 	public PattiLines[] findAll() throws PattiLinesDaoException;
 
 	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
+	 */
+	public PattiLines[] findByPatti(int pattiId) throws PattiLinesDaoException;
+
+	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'id = :id'.
 	 */
 	public PattiLines[] findWhereIdEquals(int id) throws PattiLinesDaoException;
@@ -74,29 +79,9 @@ public interface PattiLinesDao
 	public PattiLines[] findWhereActualQuantityEquals(int actualQuantity) throws PattiLinesDaoException;
 
 	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'commission_percent = :commissionPercent'.
-	 */
-	public PattiLines[] findWhereCommissionPercentEquals(double commissionPercent) throws PattiLinesDaoException;
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'loory = :loory'.
-	 */
-	public PattiLines[] findWhereLooryEquals(double loory) throws PattiLinesDaoException;
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'cooli = :cooli'.
-	 */
-	public PattiLines[] findWhereCooliEquals(double cooli) throws PattiLinesDaoException;
-
-	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
 	 */
 	public PattiLines[] findWherePattiIdEquals(int pattiId) throws PattiLinesDaoException;
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'balance = :balance'.
-	 */
-	public PattiLines[] findWhereBalanceEquals(double balance) throws PattiLinesDaoException;
 
 	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'bp_id = :bpId'.

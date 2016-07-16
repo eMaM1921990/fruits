@@ -180,7 +180,7 @@ public class X_Invoices implements I_Invoice{
 	@Override
 	public InvoiceVw[] getLastDateInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException {
 		// TODO Auto-generated method stub
-		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere(" bp_id=? and is_trx=? group by date having MAX(date)", new Object[]{Integer.parseInt(request.getParameter("bpId")),Integer.parseInt(request.getParameter("isTrx"))});
+		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere(" bp_id=? and is_trx=? order by date DESC limit 1", new Object[]{Integer.parseInt(request.getParameter("bpId")),Integer.parseInt(request.getParameter("isTrx"))});
 		return data;
 	}
 
@@ -235,6 +235,9 @@ public class X_Invoices implements I_Invoice{
 		// TODO Auto-generated method stub
 		Patti dto=new Patti();
 		dto.setPattiDate(new Date());
+		dto.setCommissionPercent(Double.parseDouble(request.getParameter("commissionPercent")));
+		dto.setCooli(Double.parseDouble(request.getParameter("cooli")));
+		dto.setLoory(Double.parseDouble(request.getParameter("loory")));
 		PattiPk pk=PattiDaoFactory.create().insert(dto);
 		if(pk!=null){
 			request.setAttribute("pk", pk.getId());
@@ -256,11 +259,8 @@ public class X_Invoices implements I_Invoice{
 			dto.setAvgCost(obj.getDouble("avgCost"));
 			dto.setAvgQuantity(obj.getInt("avgQuantity"));
 			dto.setCode(obj.getString("code"));
-			dto.setCommissionPercent(obj.getDouble("commissionPercent"));
-			dto.setCooli(obj.getDouble("cooli"));
-			dto.setLoory(obj.getDouble("loory"));
 			dto.setPattiId((int)request.getAttribute("pk"));
-			dto.setBalance(obj.getDouble("balance"));
+
 			dto.setBpId(obj.getInt("bpId"));
 			PattiLinesDaoFactory.create().insert(dto);
 			
@@ -327,11 +327,8 @@ public class X_Invoices implements I_Invoice{
 			dto.setAvgCost(obj.getDouble("avgCost"));
 			dto.setAvgQuantity(obj.getInt("avgQuantity"));
 			dto.setCode(obj.getString("code"));
-			dto.setCommissionPercent(obj.getDouble("commissionPercent"));
-			dto.setCooli(obj.getDouble("cooli"));
-			dto.setLoory(obj.getDouble("loory"));
 			dto.setPattiId((int)request.getAttribute("pk"));
-			dto.setBalance(obj.getDouble("balance"));
+
 			dto.setBpId(obj.getInt("bpId"));
 			PattiLinesDaoFactory.create().insert(dto);
 			

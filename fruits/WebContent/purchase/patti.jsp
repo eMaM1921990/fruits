@@ -53,14 +53,13 @@
                             <table id="itemstbl">
 	                            	<thead>
 	                            		<th>Fruit code</th>
-	                            		<th>Avg. Cost</th>
-	                            		<th>Avg. Quantity</th>
 	                            		<th>Actual cost</th>
 	                            		<th>Actual quantity</th>
-	                            		<th>Commission percentage</th>
-	                            		<th>Cooli</th>
-	                            		<th>Lorry charges</th>
-	                            		<th>Balance</th>
+	                            		<th>Avg. Cost</th>
+	                            		<th>Total sold units</th>
+	                            		
+	                            		
+	                            		<th>Total</th>
 	                            		<th>--</th>
 	                            	</thead>
 	                            	<tbody>
@@ -76,18 +75,40 @@
 		                                        	</select>
 	                                        	</div>
 	                            			</td>
-	                            			<td><input type="hidden" id="purchaser_1" name="purchaser"><input type="text" name="avgCost" id="avgCost_1" style="width: 50px"/></td>
-	                            			<td><input type="text" name="avgQuantity" id="avgQuantity_1" style="width: 50px"/></td>
 	                            			<td><input type="text" name="actualCost" id="actualCost_1" style="width: 50px;color:red" readonly="readonly"/></td>
 	                            			<td><input type="text" name="actualQuantity" id="actualQuantity_1" style="width: 50px;color:red" readonly="readonly"/></td>
-	                            			<td><input type="text" name="commissionPercent" id="commissionPercent_1" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="cooli" id="cooli_1" style="width: 50px" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="lorryCharges" id="lorryCharges_1" style="width: 50px" value="0" onkeyup="balance(1)"/></td>
-	                            			<td><input type="text" name="balance" id="balance_1" style="width: 50px;color:green" readonly="readonly"/></td>
+	                            			<td><input type="hidden" id="purchaser_1" name="purchaser"><input type="text" name="avgCost" id="avgCost_1" style="width: 50px"/></td>
+	                            			<td><input type="text" name="avgQuantity" id="avgQuantity_1" style="width: 50px"/></td>
+	                            			
+	                            			<td><input type="text" name="total" id="total_1" style="width: 50px;color:green" readonly="readonly"/></td>
 	                            			<td><a href="javascript:removeRow(1)">remove</a></td>
 	                            		</tr>
 	                            	</tbody>
                                 </table>
+                                </div>
+                                <div class="datagrid">
+                                	<table>
+                                		<tr>
+                                			<td>Subtotal:</td>
+                                			<td><p id="subtotal">Rs. 0</td>
+                                		</tr>
+                                		<tr>
+                                			<td>Commission:</td>
+                                			<td><input type="text" id="commission" value="0" onkeyup="CalcTotal()"> % - Rs. <input type="text" id="commission_val" value="0" onkeyup="CalcTotal()" readonly="readonly"> </td>
+                                		</tr>
+                                		<tr>
+                                			<td>Lorry Charge:</td>
+                                			<td>Rs. <input type="text" id="loory" value="0" onkeyup="CalcTotal()"></td>
+                                		</tr> 
+                                		<tr>
+                                			<td>Cooli :</td>
+                                			<td>Rs. <input type="text" id="cooli" value="0" onkeyup="CalcTotal()"></td>
+                                		</tr>
+                                		<tr>
+                                			<td>Total:</td>
+                                			<td><p id="total">Rs. 0</td>
+                                		</tr>
+                                	</table>
                                 </div>
                                 <div>
                                 	<input type="button" value="New row" class="button-style" onclick="addNewRow()"/>
@@ -139,13 +160,10 @@ function addNewRow(){
 	var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px"/>';
 	var actualCost='<input type="text" name="actualCost" id="actualCost_'+lastID+'" style="width: 50px;color:red" readonly="readonly"/>';
 	var actualQuantity='<input type="text" name="actualQuantity" id="actualQuantity_'+lastID+'" style="width: 50px;color:red" readonly="readonly"/>';
-	var commissionPercent='<input type="text" name="commissionPercent" id="commissionPercent_'+lastID+'" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var cooli='<input type="text" name="cooli" id="cooli_'+lastID+'" style="width: 50px" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var lorryCharges='<input type="text" name="lorryCharges" id="lorryCharges_'+lastID+'" style="width: 50px" value="0" onkeyup="balance('+lastID+')"/>';
-	var balance='<input type="text" name="balance" id="balance_'+lastID+'" style="width: 50px;color:green" readonly="readonly"/>';
+	var balance='<input type="text" name="total" id="total_'+lastID+'" style="width: 50px;color:green" readonly="readonly"/>';
 	var deleteBtn='<a href="javascript:removeRow('+lastID+')">remove</a>';
 	var control=deleteBtn;
-	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+commissionPercent+'</td><td>'+cooli+'</td><td>'+lorryCharges+'</td><td>'+balance+'</td><td>'+control+'</td></tr>');
+	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+balance+'</td><td>'+control+'</td></tr>');
 }
 
 
@@ -158,19 +176,11 @@ function validateTable(){
         var avgQuantity = $this.find("input[name=avgQuantity]").val();
         var actualCost = $this.find("input[name=actualCost]").val();
         var actualQuantity = $this.find("input[name=actualQuantity]").val();
-        var commissionPercent = $this.find("input[name=commissionPercent]").val();
-        var cooli = $this.find("input[name=cooli]").val();
-        var lorryCharges = $this.find("input[name=lorryCharges]").val();
-        var balance = $this.find("input[name=balance]").val();
         var itemId=$this.find("select[id=itemId]").val()
         
         if(typeof purchaser!=='undefined' && purchaser.trim().length>0 ){
         	rowData.push({
               "code":dict[parseInt(itemId)].code,
-              "balance":parseFloat(balance),
-              "loory":parseFloat(lorryCharges),
-              "cooli":parseFloat(cooli),
-              "commissionPercent":parseFloat(commissionPercent),
               "actualQuantity":parseInt(actualQuantity),
               "actualCost":parseFloat(actualCost),
               "avgQuantity":parseInt(avgQuantity),
@@ -223,6 +233,9 @@ function getAvg(id,index){
 				// render return json
 				$('#avgCost_'+index).val(responseText.price);
 				$('#avgQuantity_'+index).val(responseText.quantity);
+				$('#total_'+index).val(responseText.price*responseText.quantity);
+				$('#subtotal').html('Rs. '+responseText.price*responseText.quantity);
+				
 
 			
 		},
@@ -242,7 +255,14 @@ function saveData(){
 		async:false,
 		data : {
 		
-			data:JSON.stringify(validateTable())
+			data:JSON.stringify(validateTable()),
+			commissionPercent:$('#commission').val(),
+			loory:$('#loory').val(),
+			cooli:$('#cooli').val(),
+			subtotal:$('#subtotal').html().split(" ")[1],
+			total:$('#total').html().split(" ")[1]
+			
+			
 			
 		},
 		success : function(responseText) {
@@ -282,5 +302,27 @@ function removeRow(id){
 $( document ).ready(function() {
 	convertToDic(${ItemDataJSON});
 });
+
+function CalcTotal(){
+	var subTotal=$('#subtotal').html().split(" ")[1];
+	var commissionPercent=0;
+	var commissionValue=0;
+	if(parseFloat($('#commission').val())>0){
+		var commissionValue=(parseFloat(subTotal)*parseFloat($('#commission').val()))/100;
+		$('#commission_val').val(commissionValue);
+	}else{
+		commissionPercent=(100*parseFloat($('#commission_val').val()))/parseFloat(subTotal);
+		$('#commission').val(commissionPercent);
+	}
+	
+	
+	
+	
+	var loory=$('#loory').val();
+	var cooli=$('#cooli').val();
+	
+	var total=parseFloat(subTotal)-(parseFloat(commissionValue)+parseFloat(loory)+parseFloat(cooli));
+	$('#total').html('Rs. '+total);
+}
 
 </script>

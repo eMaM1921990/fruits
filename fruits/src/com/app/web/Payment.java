@@ -9,22 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.app.business.X_BP;
-import com.app.dal.dto.BusinessPartner;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.i.business.I_BP;
-import com.google.gson.Gson;
 
 /**
- * Servlet implementation class lastBillDate
+ * Servlet implementation class Payment
  */
-@WebServlet("/lastBillDate")
-public class lastBillDate extends HttpServlet {
+@WebServlet("/Payment")
+public class Payment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public lastBillDate() {
+    public Payment() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,22 +41,18 @@ public class lastBillDate extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		view(request, response);
+		
 	}
 	
 	protected void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String defaultURL="/sales/lastDateBill.jsp";
-		
-		
-		I_BP bp_business=new X_BP();
+		String defaultURL="/sales/payment.jsp";
+		I_BP business=new X_BP();
 		try {
-			BusinessPartner[] list= bp_business.seller(request);
-			request.setAttribute("customer", list);
-			request.setAttribute("customerJson", new Gson().toJson(list));
+			request.setAttribute("sellerData", business.seller(request));
 		} catch (BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
 		request.getRequestDispatcher(defaultURL).include(request, response);
 	}
 

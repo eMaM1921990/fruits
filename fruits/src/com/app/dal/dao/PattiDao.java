@@ -55,6 +55,31 @@ public interface PattiDao
 	public Patti[] findWherePattiDateEquals(Date pattiDate) throws PattiDaoException;
 
 	/** 
+	 * Returns all rows from the patti table that match the criteria 'commission__percent = :commissionPercent'.
+	 */
+	public Patti[] findWhereCommissionPercentEquals(double commissionPercent) throws PattiDaoException;
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'loory = :loory'.
+	 */
+	public Patti[] findWhereLooryEquals(double loory) throws PattiDaoException;
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'cooli = :cooli'.
+	 */
+	public Patti[] findWhereCooliEquals(double cooli) throws PattiDaoException;
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'subtotal = :subtotal'.
+	 */
+	public Patti[] findWhereSubtotalEquals(double subtotal) throws PattiDaoException;
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'total = :total'.
+	 */
+	public Patti[] findWhereTotalEquals(double total) throws PattiDaoException;
+
+	/** 
 	 * Sets the value of maxRows
 	 */
 	public void setMaxRows(int maxRows);

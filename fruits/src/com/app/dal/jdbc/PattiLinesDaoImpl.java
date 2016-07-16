@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id, balance, bp_id FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, patti_id, bp_id FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, commission_percent, loory, cooli, patti_id, balance, bp_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, code, avg_cost, avg_quantity, actual_cost, actual_quantity, patti_id, bp_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, code = ?, avg_cost = ?, avg_quantity = ?, actual_cost = ?, actual_quantity = ?, commission_percent = ?, loory = ?, cooli = ?, patti_id = ?, balance = ?, bp_id = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, code = ?, avg_cost = ?, avg_quantity = ?, actual_cost = ?, actual_quantity = ?, patti_id = ?, bp_id = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -89,39 +89,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_ACTUAL_QUANTITY = 6;
 
 	/** 
-	 * Index of column commission_percent
-	 */
-	protected static final int COLUMN_COMMISSION_PERCENT = 7;
-
-	/** 
-	 * Index of column loory
-	 */
-	protected static final int COLUMN_LOORY = 8;
-
-	/** 
-	 * Index of column cooli
-	 */
-	protected static final int COLUMN_COOLI = 9;
-
-	/** 
 	 * Index of column patti_id
 	 */
-	protected static final int COLUMN_PATTI_ID = 10;
-
-	/** 
-	 * Index of column balance
-	 */
-	protected static final int COLUMN_BALANCE = 11;
+	protected static final int COLUMN_PATTI_ID = 7;
 
 	/** 
 	 * Index of column bp_id
 	 */
-	protected static final int COLUMN_BP_ID = 12;
+	protected static final int COLUMN_BP_ID = 8;
 
 	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 12;
+	protected static final int NUMBER_OF_COLUMNS = 8;
 
 	/** 
 	 * Index of primary-key column id
@@ -172,34 +152,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setInt( index++, dto.getActualQuantity() );
 			}
 		
-			if (dto.isCommissionPercentNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getCommissionPercent() );
-			}
-		
-			if (dto.isLooryNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getLoory() );
-			}
-		
-			if (dto.isCooliNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getCooli() );
-			}
-		
 			if (dto.isPattiIdNull()) {
 				stmt.setNull( index++, java.sql.Types.INTEGER );
 			} else {
 				stmt.setInt( index++, dto.getPattiId() );
-			}
-		
-			if (dto.isBalanceNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getBalance() );
 			}
 		
 			if (dto.isBpIdNull()) {
@@ -280,34 +236,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setInt( index++, dto.getActualQuantity() );
 			}
 		
-			if (dto.isCommissionPercentNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getCommissionPercent() );
-			}
-		
-			if (dto.isLooryNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getLoory() );
-			}
-		
-			if (dto.isCooliNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getCooli() );
-			}
-		
 			if (dto.isPattiIdNull()) {
 				stmt.setNull( index++, java.sql.Types.INTEGER );
 			} else {
 				stmt.setInt( index++, dto.getPattiId() );
-			}
-		
-			if (dto.isBalanceNull()) {
-				stmt.setNull( index++, java.sql.Types.DOUBLE );
-			} else {
-				stmt.setDouble( index++, dto.getBalance() );
 			}
 		
 			if (dto.isBpIdNull()) {
@@ -316,7 +248,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				stmt.setInt( index++, dto.getBpId() );
 			}
 		
-			stmt.setInt( 13, pk.getId() );
+			stmt.setInt( 9, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -398,6 +330,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	}
 
 	/** 
+	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
+	 */
+	public PattiLines[] findByPatti(int pattiId) throws PattiLinesDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE patti_id = ?", new Object[] {  new Integer(pattiId) } );
+	}
+
+	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'id = :id'.
 	 */
 	public PattiLines[] findWhereIdEquals(int id) throws PattiLinesDaoException
@@ -446,43 +386,11 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	}
 
 	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'commission_percent = :commissionPercent'.
-	 */
-	public PattiLines[] findWhereCommissionPercentEquals(double commissionPercent) throws PattiLinesDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE commission_percent = ? ORDER BY commission_percent", new Object[] {  new Double(commissionPercent) } );
-	}
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'loory = :loory'.
-	 */
-	public PattiLines[] findWhereLooryEquals(double loory) throws PattiLinesDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE loory = ? ORDER BY loory", new Object[] {  new Double(loory) } );
-	}
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'cooli = :cooli'.
-	 */
-	public PattiLines[] findWhereCooliEquals(double cooli) throws PattiLinesDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE cooli = ? ORDER BY cooli", new Object[] {  new Double(cooli) } );
-	}
-
-	/** 
 	 * Returns all rows from the patti_lines table that match the criteria 'patti_id = :pattiId'.
 	 */
 	public PattiLines[] findWherePattiIdEquals(int pattiId) throws PattiLinesDaoException
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE patti_id = ? ORDER BY patti_id", new Object[] {  new Integer(pattiId) } );
-	}
-
-	/** 
-	 * Returns all rows from the patti_lines table that match the criteria 'balance = :balance'.
-	 */
-	public PattiLines[] findWhereBalanceEquals(double balance) throws PattiLinesDaoException
-	{
-		return findByDynamicSelect( SQL_SELECT + " WHERE balance = ? ORDER BY balance", new Object[] {  new Double(balance) } );
 	}
 
 	/** 
@@ -596,29 +504,9 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			dto.setActualQuantityNull( true );
 		}
 		
-		dto.setCommissionPercent( rs.getDouble( COLUMN_COMMISSION_PERCENT ) );
-		if (rs.wasNull()) {
-			dto.setCommissionPercentNull( true );
-		}
-		
-		dto.setLoory( rs.getDouble( COLUMN_LOORY ) );
-		if (rs.wasNull()) {
-			dto.setLooryNull( true );
-		}
-		
-		dto.setCooli( rs.getDouble( COLUMN_COOLI ) );
-		if (rs.wasNull()) {
-			dto.setCooliNull( true );
-		}
-		
 		dto.setPattiId( rs.getInt( COLUMN_PATTI_ID ) );
 		if (rs.wasNull()) {
 			dto.setPattiIdNull( true );
-		}
-		
-		dto.setBalance( rs.getDouble( COLUMN_BALANCE ) );
-		if (rs.wasNull()) {
-			dto.setBalanceNull( true );
 		}
 		
 		dto.setBpId( rs.getInt( COLUMN_BP_ID ) );

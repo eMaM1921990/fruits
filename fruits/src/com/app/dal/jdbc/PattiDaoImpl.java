@@ -37,7 +37,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, patti_date FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, patti_date, commission__percent, loory, cooli, subtotal, total FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -47,12 +47,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, patti_date ) VALUES ( ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, patti_date, commission__percent, loory, cooli, subtotal, total ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, patti_date = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, patti_date = ?, commission__percent = ?, loory = ?, cooli = ?, subtotal = ?, total = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -70,9 +70,34 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_PATTI_DATE = 2;
 
 	/** 
+	 * Index of column commission__percent
+	 */
+	protected static final int COLUMN_COMMISSION_PERCENT = 3;
+
+	/** 
+	 * Index of column loory
+	 */
+	protected static final int COLUMN_LOORY = 4;
+
+	/** 
+	 * Index of column cooli
+	 */
+	protected static final int COLUMN_COOLI = 5;
+
+	/** 
+	 * Index of column subtotal
+	 */
+	protected static final int COLUMN_SUBTOTAL = 6;
+
+	/** 
+	 * Index of column total
+	 */
+	protected static final int COLUMN_TOTAL = 7;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 2;
+	protected static final int NUMBER_OF_COLUMNS = 7;
 
 	/** 
 	 * Index of primary-key column id
@@ -99,6 +124,36 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			int index = 1;
 			stmt.setInt( index++, dto.getId() );
 			stmt.setDate(index++, dto.getPattiDate()==null ? null : new java.sql.Date( dto.getPattiDate().getTime() ) );
+			if (dto.isCommissionPercentNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getCommissionPercent() );
+			}
+		
+			if (dto.isLooryNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getLoory() );
+			}
+		
+			if (dto.isCooliNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getCooli() );
+			}
+		
+			if (dto.isSubtotalNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getSubtotal() );
+			}
+		
+			if (dto.isTotalNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getTotal() );
+			}
+		
 			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
 			int rows = stmt.executeUpdate();
 			long t2 = System.currentTimeMillis();
@@ -147,7 +202,37 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			int index=1;
 			stmt.setInt( index++, dto.getId() );
 			stmt.setDate(index++, dto.getPattiDate()==null ? null : new java.sql.Date( dto.getPattiDate().getTime() ) );
-			stmt.setInt( 3, pk.getId() );
+			if (dto.isCommissionPercentNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getCommissionPercent() );
+			}
+		
+			if (dto.isLooryNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getLoory() );
+			}
+		
+			if (dto.isCooliNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getCooli() );
+			}
+		
+			if (dto.isSubtotalNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getSubtotal() );
+			}
+		
+			if (dto.isTotalNull()) {
+				stmt.setNull( index++, java.sql.Types.DOUBLE );
+			} else {
+				stmt.setDouble( index++, dto.getTotal() );
+			}
+		
+			stmt.setInt( 8, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -244,6 +329,46 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		return findByDynamicSelect( SQL_SELECT + " WHERE patti_date = ? ORDER BY patti_date", new Object[] { pattiDate==null ? null : new java.sql.Date( pattiDate.getTime() ) } );
 	}
 
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'commission__percent = :commissionPercent'.
+	 */
+	public Patti[] findWhereCommissionPercentEquals(double commissionPercent) throws PattiDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE commission__percent = ? ORDER BY commission__percent", new Object[] {  new Double(commissionPercent) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'loory = :loory'.
+	 */
+	public Patti[] findWhereLooryEquals(double loory) throws PattiDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE loory = ? ORDER BY loory", new Object[] {  new Double(loory) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'cooli = :cooli'.
+	 */
+	public Patti[] findWhereCooliEquals(double cooli) throws PattiDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE cooli = ? ORDER BY cooli", new Object[] {  new Double(cooli) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'subtotal = :subtotal'.
+	 */
+	public Patti[] findWhereSubtotalEquals(double subtotal) throws PattiDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE subtotal = ? ORDER BY subtotal", new Object[] {  new Double(subtotal) } );
+	}
+
+	/** 
+	 * Returns all rows from the patti table that match the criteria 'total = :total'.
+	 */
+	public Patti[] findWhereTotalEquals(double total) throws PattiDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE total = ? ORDER BY total", new Object[] {  new Double(total) } );
+	}
+
 	/**
 	 * Method 'PattiDaoImpl'
 	 * 
@@ -327,6 +452,31 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	{
 		dto.setId( rs.getInt( COLUMN_ID ) );
 		dto.setPattiDate( rs.getDate(COLUMN_PATTI_DATE ) );
+		dto.setCommissionPercent( rs.getDouble( COLUMN_COMMISSION_PERCENT ) );
+		if (rs.wasNull()) {
+			dto.setCommissionPercentNull( true );
+		}
+		
+		dto.setLoory( rs.getDouble( COLUMN_LOORY ) );
+		if (rs.wasNull()) {
+			dto.setLooryNull( true );
+		}
+		
+		dto.setCooli( rs.getDouble( COLUMN_COOLI ) );
+		if (rs.wasNull()) {
+			dto.setCooliNull( true );
+		}
+		
+		dto.setSubtotal( rs.getDouble( COLUMN_SUBTOTAL ) );
+		if (rs.wasNull()) {
+			dto.setSubtotalNull( true );
+		}
+		
+		dto.setTotal( rs.getDouble( COLUMN_TOTAL ) );
+		if (rs.wasNull()) {
+			dto.setTotalNull( true );
+		}
+		
 	}
 
 	/** 

@@ -72,6 +72,11 @@ public class InvoiceVw implements Serializable
 	 */
 	protected String name;
 
+	/** 
+	 * This attribute maps to the column invoice_id in the invoice_vw table.
+	 */
+	protected int invoiceId;
+
 	/**
 	 * Method 'InvoiceVw'
 	 * 
@@ -305,6 +310,26 @@ public class InvoiceVw implements Serializable
 	}
 
 	/**
+	 * Method 'getInvoiceId'
+	 * 
+	 * @return int
+	 */
+	public int getInvoiceId()
+	{
+		return invoiceId;
+	}
+
+	/**
+	 * Method 'setInvoiceId'
+	 * 
+	 * @param invoiceId
+	 */
+	public void setInvoiceId(int invoiceId)
+	{
+		this.invoiceId = invoiceId;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -369,6 +394,10 @@ public class InvoiceVw implements Serializable
 			return false;
 		}
 		
+		if (invoiceId != _cast.invoiceId) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -399,6 +428,7 @@ public class InvoiceVw implements Serializable
 			_hashCode = 29 * _hashCode + name.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + invoiceId;
 		return _hashCode;
 	}
 
@@ -418,6 +448,7 @@ public class InvoiceVw implements Serializable
 		ret.append( ", price=" + price );
 		ret.append( ", quantity=" + quantity );
 		ret.append( ", name=" + name );
+		ret.append( ", invoiceId=" + invoiceId );
 		return ret.toString();
 	}
 

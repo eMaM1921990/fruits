@@ -67,36 +67,6 @@ public class PattiLines implements Serializable
 	protected boolean actualQuantityNull = true;
 
 	/** 
-	 * This attribute maps to the column commission_percent in the patti_lines table.
-	 */
-	protected double commissionPercent;
-
-	/** 
-	 * This attribute represents whether the primitive attribute commissionPercent is null.
-	 */
-	protected boolean commissionPercentNull = true;
-
-	/** 
-	 * This attribute maps to the column loory in the patti_lines table.
-	 */
-	protected double loory;
-
-	/** 
-	 * This attribute represents whether the primitive attribute loory is null.
-	 */
-	protected boolean looryNull = true;
-
-	/** 
-	 * This attribute maps to the column cooli in the patti_lines table.
-	 */
-	protected double cooli;
-
-	/** 
-	 * This attribute represents whether the primitive attribute cooli is null.
-	 */
-	protected boolean cooliNull = true;
-
-	/** 
 	 * This attribute maps to the column patti_id in the patti_lines table.
 	 */
 	protected int pattiId;
@@ -105,16 +75,6 @@ public class PattiLines implements Serializable
 	 * This attribute represents whether the primitive attribute pattiId is null.
 	 */
 	protected boolean pattiIdNull = true;
-
-	/** 
-	 * This attribute maps to the column balance in the patti_lines table.
-	 */
-	protected double balance;
-
-	/** 
-	 * This attribute represents whether the primitive attribute balance is null.
-	 */
-	protected boolean balanceNull = true;
 
 	/** 
 	 * This attribute maps to the column bp_id in the patti_lines table.
@@ -339,129 +299,6 @@ public class PattiLines implements Serializable
 	}
 
 	/**
-	 * Method 'getCommissionPercent'
-	 * 
-	 * @return double
-	 */
-	public double getCommissionPercent()
-	{
-		return commissionPercent;
-	}
-
-	/**
-	 * Method 'setCommissionPercent'
-	 * 
-	 * @param commissionPercent
-	 */
-	public void setCommissionPercent(double commissionPercent)
-	{
-		this.commissionPercent = commissionPercent;
-		this.commissionPercentNull = false;
-	}
-
-	/**
-	 * Method 'setCommissionPercentNull'
-	 * 
-	 * @param value
-	 */
-	public void setCommissionPercentNull(boolean value)
-	{
-		this.commissionPercentNull = value;
-	}
-
-	/**
-	 * Method 'isCommissionPercentNull'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isCommissionPercentNull()
-	{
-		return commissionPercentNull;
-	}
-
-	/**
-	 * Method 'getLoory'
-	 * 
-	 * @return double
-	 */
-	public double getLoory()
-	{
-		return loory;
-	}
-
-	/**
-	 * Method 'setLoory'
-	 * 
-	 * @param loory
-	 */
-	public void setLoory(double loory)
-	{
-		this.loory = loory;
-		this.looryNull = false;
-	}
-
-	/**
-	 * Method 'setLooryNull'
-	 * 
-	 * @param value
-	 */
-	public void setLooryNull(boolean value)
-	{
-		this.looryNull = value;
-	}
-
-	/**
-	 * Method 'isLooryNull'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isLooryNull()
-	{
-		return looryNull;
-	}
-
-	/**
-	 * Method 'getCooli'
-	 * 
-	 * @return double
-	 */
-	public double getCooli()
-	{
-		return cooli;
-	}
-
-	/**
-	 * Method 'setCooli'
-	 * 
-	 * @param cooli
-	 */
-	public void setCooli(double cooli)
-	{
-		this.cooli = cooli;
-		this.cooliNull = false;
-	}
-
-	/**
-	 * Method 'setCooliNull'
-	 * 
-	 * @param value
-	 */
-	public void setCooliNull(boolean value)
-	{
-		this.cooliNull = value;
-	}
-
-	/**
-	 * Method 'isCooliNull'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isCooliNull()
-	{
-		return cooliNull;
-	}
-
-	/**
 	 * Method 'getPattiId'
 	 * 
 	 * @return int
@@ -500,47 +337,6 @@ public class PattiLines implements Serializable
 	public boolean isPattiIdNull()
 	{
 		return pattiIdNull;
-	}
-
-	/**
-	 * Method 'getBalance'
-	 * 
-	 * @return double
-	 */
-	public double getBalance()
-	{
-		return balance;
-	}
-
-	/**
-	 * Method 'setBalance'
-	 * 
-	 * @param balance
-	 */
-	public void setBalance(double balance)
-	{
-		this.balance = balance;
-		this.balanceNull = false;
-	}
-
-	/**
-	 * Method 'setBalanceNull'
-	 * 
-	 * @param value
-	 */
-	public void setBalanceNull(boolean value)
-	{
-		this.balanceNull = value;
-	}
-
-	/**
-	 * Method 'isBalanceNull'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isBalanceNull()
-	{
-		return balanceNull;
 	}
 
 	/**
@@ -645,43 +441,11 @@ public class PattiLines implements Serializable
 			return false;
 		}
 		
-		if (commissionPercent != _cast.commissionPercent) {
-			return false;
-		}
-		
-		if (commissionPercentNull != _cast.commissionPercentNull) {
-			return false;
-		}
-		
-		if (loory != _cast.loory) {
-			return false;
-		}
-		
-		if (looryNull != _cast.looryNull) {
-			return false;
-		}
-		
-		if (cooli != _cast.cooli) {
-			return false;
-		}
-		
-		if (cooliNull != _cast.cooliNull) {
-			return false;
-		}
-		
 		if (pattiId != _cast.pattiId) {
 			return false;
 		}
 		
 		if (pattiIdNull != _cast.pattiIdNull) {
-			return false;
-		}
-		
-		if (balance != _cast.balance) {
-			return false;
-		}
-		
-		if (balanceNull != _cast.balanceNull) {
 			return false;
 		}
 		
@@ -719,20 +483,8 @@ public class PattiLines implements Serializable
 		_hashCode = 29 * _hashCode + (actualCostNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + actualQuantity;
 		_hashCode = 29 * _hashCode + (actualQuantityNull ? 1 : 0);
-		long temp_commissionPercent = Double.doubleToLongBits(commissionPercent);
-		_hashCode = 29 * _hashCode + (int) (temp_commissionPercent ^ (temp_commissionPercent >>> 32));
-		_hashCode = 29 * _hashCode + (commissionPercentNull ? 1 : 0);
-		long temp_loory = Double.doubleToLongBits(loory);
-		_hashCode = 29 * _hashCode + (int) (temp_loory ^ (temp_loory >>> 32));
-		_hashCode = 29 * _hashCode + (looryNull ? 1 : 0);
-		long temp_cooli = Double.doubleToLongBits(cooli);
-		_hashCode = 29 * _hashCode + (int) (temp_cooli ^ (temp_cooli >>> 32));
-		_hashCode = 29 * _hashCode + (cooliNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + pattiId;
 		_hashCode = 29 * _hashCode + (pattiIdNull ? 1 : 0);
-		long temp_balance = Double.doubleToLongBits(balance);
-		_hashCode = 29 * _hashCode + (int) (temp_balance ^ (temp_balance >>> 32));
-		_hashCode = 29 * _hashCode + (balanceNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + bpId;
 		_hashCode = 29 * _hashCode + (bpIdNull ? 1 : 0);
 		return _hashCode;
@@ -763,11 +515,7 @@ public class PattiLines implements Serializable
 		ret.append( ", avgQuantity=" + avgQuantity );
 		ret.append( ", actualCost=" + actualCost );
 		ret.append( ", actualQuantity=" + actualQuantity );
-		ret.append( ", commissionPercent=" + commissionPercent );
-		ret.append( ", loory=" + loory );
-		ret.append( ", cooli=" + cooli );
 		ret.append( ", pattiId=" + pattiId );
-		ret.append( ", balance=" + balance );
 		ret.append( ", bpId=" + bpId );
 		return ret.toString();
 	}

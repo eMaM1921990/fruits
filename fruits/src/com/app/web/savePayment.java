@@ -8,23 +8,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.app.business.X_BP;
-import com.app.dal.dto.BusinessPartner;
+import com.app.business.X_Invoices;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
-import com.app.i.business.I_BP;
-import com.google.gson.Gson;
+import com.app.i.business.I_Invoice;
 
 /**
- * Servlet implementation class lastBillDate
+ * Servlet implementation class savePayment
  */
-@WebServlet("/lastBillDate")
-public class lastBillDate extends HttpServlet {
+@WebServlet("/savePayment")
+public class savePayment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public lastBillDate() {
+    public savePayment() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,7 +32,6 @@ public class lastBillDate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		view(request, response);
 	}
 
 	/**
@@ -42,24 +39,16 @@ public class lastBillDate extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		view(request, response);
-	}
-	
-	protected void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String defaultURL="/sales/lastDateBill.jsp";
-		
-		
-		I_BP bp_business=new X_BP();
+		I_Invoice business=new X_Invoices();
 		try {
-			BusinessPartner[] list= bp_business.seller(request);
-			request.setAttribute("customer", list);
-			request.setAttribute("customerJson", new Gson().toJson(list));
-		} catch (BusinessPartnerDaoException e) {
+			business.updateBalance(Integer.parseInt(request.getParameter("bpId")), Double.parseDouble(request.getParameter("amount")));
+			response.getWriter().write("Payment saved");
+			
+		} catch (NumberFormatException | BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
-		request.getRequestDispatcher(defaultURL).include(request, response);
+			response.getWriter().write("[Error] cause :- "+e.getMessage());
+		}
 	}
 
 }

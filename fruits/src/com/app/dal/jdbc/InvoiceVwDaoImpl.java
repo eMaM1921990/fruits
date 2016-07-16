@@ -37,7 +37,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT date, bp_id, is_trx, id, price, quantity, name FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT date, bp_id, is_trx, id, price, quantity, name, invoice_id FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -80,9 +80,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_NAME = 7;
 
 	/** 
+	 * Index of column invoice_id
+	 */
+	protected static final int COLUMN_INVOICE_ID = 8;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 7;
+	protected static final int NUMBER_OF_COLUMNS = 8;
 
 	/** 
 	 * Returns all rows from the invoice_vw table that match the criteria ''.
@@ -146,6 +151,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	public InvoiceVw[] findWhereNameEquals(String name) throws InvoiceVwDaoException
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE name = ? ORDER BY name", new Object[] { name } );
+	}
+
+	/** 
+	 * Returns all rows from the invoice_vw table that match the criteria 'invoice_id = :invoiceId'.
+	 */
+	public InvoiceVw[] findWhereInvoiceIdEquals(int invoiceId) throws InvoiceVwDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE invoice_id = ? ORDER BY invoice_id", new Object[] {  new Integer(invoiceId) } );
 	}
 
 	/**
@@ -252,6 +265,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		}
 		
 		dto.setName( rs.getString( COLUMN_NAME ) );
+		dto.setInvoiceId( rs.getInt( COLUMN_INVOICE_ID ) );
 	}
 
 	/** 

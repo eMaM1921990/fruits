@@ -43,15 +43,18 @@
                     			<td>
                     				<div class="select-style">
                     				
-	                    				<select name="bpId" id="bpId">
+	                    				<select name="bpId" id="bpId" onchange="getBalance(this.value)">
 	                        				<option>Select Seller</option>
-	                        				<c:forEach items="${customer }" var="cus">
+	                        				<c:forEach items="${customer }" var="cus" >
 	                        					<option value="${cus.id }">${cus.bpName }</option>
 	                        				</c:forEach>
 	                        			</select>
                         			</div>
                     			</td>
                     		
+                    		</tr>
+                    		<tr>
+                    				<td>Current Balance : </td><td><p id="balance">Rs .0</td>
                     		</tr>
                     	</table>
 
@@ -63,6 +66,7 @@
                             <table id="itemstbl">
 	                            	<thead>
 	                            		<th>Fruit code</th>
+	                            		<th>Fruit Name / Type</th>
 	                            		<th>Quantity</th>
 	                            		<th>Price</th>
 	                            		<th>--</th>
@@ -80,6 +84,7 @@
 		                                        	</select>
 	                                        	</div>
 	                            			</td>
+	                            			<td><input type="text" name="name_1" id="name_1" readonly="readonly"/></td>
 	                            			<td><input type="text" name="quantity" id="quantity"/></td>
 	                            			<td><input type="text" name="price" id="price_1"/></td>
 	                            			<td><a href="javascript:removeRow(1)">remove</a></td>
@@ -118,8 +123,25 @@ function convertToDic(Json){
 
 }
 
+var customers=[];
+function CustomerDic(Json){
+	
+	for(var i=0;i<Json.length;i++){
+	
+		customers[Json[i].id]=Json[i];
+	}
+
+}
+
+function getBalance(id){
+	$('#balance').html('Rs. '+customers[id].balance);
+	
+}
+
+
 function getItemPrice(id,index){
 	$('#price_'+index).val(dict[id].price);
+	$('#name_'+index).val(dict[id].name+" / "+dict[id].type);
 }
 
 
@@ -132,11 +154,12 @@ function addNewRow(){
 		fruit=fruit+"<option value='"+dict[key].id+"'>"+dict[key].code+"</option>";
 	}
 	fruit=fruit+"</select></div>";
+	var name='<input type="text" id="name_'+lastID+'" readonly="readonly"/>';
 	var quantity='<input type="text" name="quantity" />';
 	var price='<input type="text" name="price" id="price_'+lastID+'"/>';
 	var deleteBtn='<a href="javascript:removeRow('+lastID+')">remove</a>';
 	var control=deleteBtn;
-	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+fruit+'</td><td>'+quantity+'</td><td>'+price+'</td><td>'+control+'</td></tr>');
+	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+fruit+'</td><td>'+name+'</td><td>'+quantity+'</td><td>'+price+'</td><td>'+control+'</td></tr>');
 }
 
 
@@ -205,6 +228,7 @@ function removeRow(id){
 
 $( document ).ready(function() {
 	convertToDic(${ItemDataJSON});
+	CustomerDic(${customerJson});
 });
 function printTrigger(elementId) {
 

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.app.business.X_BP;
 import com.app.business.X_Items;
+import com.app.dal.dto.BusinessPartner;
 import com.app.dal.dto.Items;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.ItemsDaoException;
@@ -62,7 +63,10 @@ public class saleBill extends HttpServlet {
 		
 		I_BP bp_business=new X_BP();
 		try {
-			request.setAttribute("customer", bp_business.seller(request));
+			
+			BusinessPartner[] list= bp_business.seller(request);
+			request.setAttribute("customer", list);
+			request.setAttribute("customerJson", new Gson().toJson(list));
 		} catch (BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

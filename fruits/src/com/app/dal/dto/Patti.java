@@ -27,6 +27,56 @@ public class Patti implements Serializable
 	 */
 	protected Date pattiDate;
 
+	/** 
+	 * This attribute maps to the column commission__percent in the patti table.
+	 */
+	protected double commissionPercent;
+
+	/** 
+	 * This attribute represents whether the primitive attribute commissionPercent is null.
+	 */
+	protected boolean commissionPercentNull = true;
+
+	/** 
+	 * This attribute maps to the column loory in the patti table.
+	 */
+	protected double loory;
+
+	/** 
+	 * This attribute represents whether the primitive attribute loory is null.
+	 */
+	protected boolean looryNull = true;
+
+	/** 
+	 * This attribute maps to the column cooli in the patti table.
+	 */
+	protected double cooli;
+
+	/** 
+	 * This attribute represents whether the primitive attribute cooli is null.
+	 */
+	protected boolean cooliNull = true;
+
+	/** 
+	 * This attribute maps to the column subtotal in the patti table.
+	 */
+	protected double subtotal;
+
+	/** 
+	 * This attribute represents whether the primitive attribute subtotal is null.
+	 */
+	protected boolean subtotalNull = true;
+
+	/** 
+	 * This attribute maps to the column total in the patti table.
+	 */
+	protected double total;
+
+	/** 
+	 * This attribute represents whether the primitive attribute total is null.
+	 */
+	protected boolean totalNull = true;
+
 	/**
 	 * Method 'Patti'
 	 * 
@@ -76,6 +126,211 @@ public class Patti implements Serializable
 	}
 
 	/**
+	 * Method 'getCommissionPercent'
+	 * 
+	 * @return double
+	 */
+	public double getCommissionPercent()
+	{
+		return commissionPercent;
+	}
+
+	/**
+	 * Method 'setCommissionPercent'
+	 * 
+	 * @param commissionPercent
+	 */
+	public void setCommissionPercent(double commissionPercent)
+	{
+		this.commissionPercent = commissionPercent;
+		this.commissionPercentNull = false;
+	}
+
+	/**
+	 * Method 'setCommissionPercentNull'
+	 * 
+	 * @param value
+	 */
+	public void setCommissionPercentNull(boolean value)
+	{
+		this.commissionPercentNull = value;
+	}
+
+	/**
+	 * Method 'isCommissionPercentNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isCommissionPercentNull()
+	{
+		return commissionPercentNull;
+	}
+
+	/**
+	 * Method 'getLoory'
+	 * 
+	 * @return double
+	 */
+	public double getLoory()
+	{
+		return loory;
+	}
+
+	/**
+	 * Method 'setLoory'
+	 * 
+	 * @param loory
+	 */
+	public void setLoory(double loory)
+	{
+		this.loory = loory;
+		this.looryNull = false;
+	}
+
+	/**
+	 * Method 'setLooryNull'
+	 * 
+	 * @param value
+	 */
+	public void setLooryNull(boolean value)
+	{
+		this.looryNull = value;
+	}
+
+	/**
+	 * Method 'isLooryNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isLooryNull()
+	{
+		return looryNull;
+	}
+
+	/**
+	 * Method 'getCooli'
+	 * 
+	 * @return double
+	 */
+	public double getCooli()
+	{
+		return cooli;
+	}
+
+	/**
+	 * Method 'setCooli'
+	 * 
+	 * @param cooli
+	 */
+	public void setCooli(double cooli)
+	{
+		this.cooli = cooli;
+		this.cooliNull = false;
+	}
+
+	/**
+	 * Method 'setCooliNull'
+	 * 
+	 * @param value
+	 */
+	public void setCooliNull(boolean value)
+	{
+		this.cooliNull = value;
+	}
+
+	/**
+	 * Method 'isCooliNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isCooliNull()
+	{
+		return cooliNull;
+	}
+
+	/**
+	 * Method 'getSubtotal'
+	 * 
+	 * @return double
+	 */
+	public double getSubtotal()
+	{
+		return subtotal;
+	}
+
+	/**
+	 * Method 'setSubtotal'
+	 * 
+	 * @param subtotal
+	 */
+	public void setSubtotal(double subtotal)
+	{
+		this.subtotal = subtotal;
+		this.subtotalNull = false;
+	}
+
+	/**
+	 * Method 'setSubtotalNull'
+	 * 
+	 * @param value
+	 */
+	public void setSubtotalNull(boolean value)
+	{
+		this.subtotalNull = value;
+	}
+
+	/**
+	 * Method 'isSubtotalNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSubtotalNull()
+	{
+		return subtotalNull;
+	}
+
+	/**
+	 * Method 'getTotal'
+	 * 
+	 * @return double
+	 */
+	public double getTotal()
+	{
+		return total;
+	}
+
+	/**
+	 * Method 'setTotal'
+	 * 
+	 * @param total
+	 */
+	public void setTotal(double total)
+	{
+		this.total = total;
+		this.totalNull = false;
+	}
+
+	/**
+	 * Method 'setTotalNull'
+	 * 
+	 * @param value
+	 */
+	public void setTotalNull(boolean value)
+	{
+		this.totalNull = value;
+	}
+
+	/**
+	 * Method 'isTotalNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isTotalNull()
+	{
+		return totalNull;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -104,6 +359,46 @@ public class Patti implements Serializable
 			return false;
 		}
 		
+		if (commissionPercent != _cast.commissionPercent) {
+			return false;
+		}
+		
+		if (commissionPercentNull != _cast.commissionPercentNull) {
+			return false;
+		}
+		
+		if (loory != _cast.loory) {
+			return false;
+		}
+		
+		if (looryNull != _cast.looryNull) {
+			return false;
+		}
+		
+		if (cooli != _cast.cooli) {
+			return false;
+		}
+		
+		if (cooliNull != _cast.cooliNull) {
+			return false;
+		}
+		
+		if (subtotal != _cast.subtotal) {
+			return false;
+		}
+		
+		if (subtotalNull != _cast.subtotalNull) {
+			return false;
+		}
+		
+		if (total != _cast.total) {
+			return false;
+		}
+		
+		if (totalNull != _cast.totalNull) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -120,6 +415,21 @@ public class Patti implements Serializable
 			_hashCode = 29 * _hashCode + pattiDate.hashCode();
 		}
 		
+		long temp_commissionPercent = Double.doubleToLongBits(commissionPercent);
+		_hashCode = 29 * _hashCode + (int) (temp_commissionPercent ^ (temp_commissionPercent >>> 32));
+		_hashCode = 29 * _hashCode + (commissionPercentNull ? 1 : 0);
+		long temp_loory = Double.doubleToLongBits(loory);
+		_hashCode = 29 * _hashCode + (int) (temp_loory ^ (temp_loory >>> 32));
+		_hashCode = 29 * _hashCode + (looryNull ? 1 : 0);
+		long temp_cooli = Double.doubleToLongBits(cooli);
+		_hashCode = 29 * _hashCode + (int) (temp_cooli ^ (temp_cooli >>> 32));
+		_hashCode = 29 * _hashCode + (cooliNull ? 1 : 0);
+		long temp_subtotal = Double.doubleToLongBits(subtotal);
+		_hashCode = 29 * _hashCode + (int) (temp_subtotal ^ (temp_subtotal >>> 32));
+		_hashCode = 29 * _hashCode + (subtotalNull ? 1 : 0);
+		long temp_total = Double.doubleToLongBits(total);
+		_hashCode = 29 * _hashCode + (int) (temp_total ^ (temp_total >>> 32));
+		_hashCode = 29 * _hashCode + (totalNull ? 1 : 0);
 		return _hashCode;
 	}
 
@@ -144,6 +454,11 @@ public class Patti implements Serializable
 		ret.append( "com.app.dal.dto.Patti: " );
 		ret.append( "id=" + id );
 		ret.append( ", pattiDate=" + pattiDate );
+		ret.append( ", commissionPercent=" + commissionPercent );
+		ret.append( ", loory=" + loory );
+		ret.append( ", cooli=" + cooli );
+		ret.append( ", subtotal=" + subtotal );
+		ret.append( ", total=" + total );
 		return ret.toString();
 	}
 
