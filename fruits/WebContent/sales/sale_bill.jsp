@@ -162,7 +162,7 @@ function addNewRow(){
 	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+fruit+'</td><td>'+name+'</td><td>'+quantity+'</td><td>'+price+'</td><td>'+control+'</td></tr>');
 }
 
-
+var grandTotal=0;
 function validateTable(){
 	rowData=[];
 	$("tbody > tr").each(function() {
@@ -178,6 +178,7 @@ function validateTable(){
               "quantity":parseFloat(quantity),
               "code":dict[itemId].code
           });
+        	grandTotal=grandTotal+(parseFloat(price)*parseFloat(quantity));
         }
   });
 
@@ -196,7 +197,7 @@ function saveData(){
 			token:1,
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
-			grandTotal:(parseFloat($('#price').val())*parseFloat($('#quantity').val())),
+			grandTotal:grandTotal,
 			data:JSON.stringify(validateTable())
 			
 		},

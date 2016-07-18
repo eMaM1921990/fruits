@@ -70,4 +70,12 @@ public class X_Items implements I_Items{
 		return code.toUpperCase();
 	}
 
+	@Override
+	public Items[] listByBpId(HttpServletRequest request)
+			throws ItemsDaoException {
+		// TODO Auto-generated method stub
+		Items [] data=ItemsDaoFactory.create().findByDynamicWhere("bpId in (select id from business_partner)", null);
+		return data;
+	}
+
 }

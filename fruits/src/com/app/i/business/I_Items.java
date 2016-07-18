@@ -10,6 +10,7 @@ public interface I_Items {
 	public void update(HttpServletRequest request) throws ItemsDaoException;
 	public void delete(HttpServletRequest request) throws ItemsDaoException;
 	public Items[] list(HttpServletRequest request) throws ItemsDaoException;
+	public Items[] listByBpId(HttpServletRequest request) throws ItemsDaoException;
 	public String setCode(String purhcase,String name,String type);
 
 }

@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT id, name, quantity, stock_id, code, price, type FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT id, name, quantity, stock_id, code, price, type, bpId FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, name, quantity, stock_id, code, price, type ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( id, name, quantity, stock_id, code, price, type, bpId ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, name = ?, quantity = ?, stock_id = ?, code = ?, price = ?, type = ? WHERE id = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET id = ?, name = ?, quantity = ?, stock_id = ?, code = ?, price = ?, type = ?, bpId = ? WHERE id = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -94,9 +94,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected static final int COLUMN_TYPE = 7;
 
 	/** 
+	 * Index of column bpId
+	 */
+	protected static final int COLUMN_BP_ID = 8;
+
+	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 7;
+	protected static final int NUMBER_OF_COLUMNS = 8;
 
 	/** 
 	 * Index of primary-key column id
@@ -143,6 +148,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			}
 		
 			stmt.setString( index++, dto.getType() );
+			if (dto.isBpIdNull()) {
+				stmt.setNull( index++, java.sql.Types.INTEGER );
+			} else {
+				stmt.setInt( index++, dto.getBpId() );
+			}
+		
 			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
 			int rows = stmt.executeUpdate();
 			long t2 = System.currentTimeMillis();
@@ -211,7 +222,13 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			}
 		
 			stmt.setString( index++, dto.getType() );
-			stmt.setInt( 8, pk.getId() );
+			if (dto.isBpIdNull()) {
+				stmt.setNull( index++, java.sql.Types.INTEGER );
+			} else {
+				stmt.setInt( index++, dto.getBpId() );
+			}
+		
+			stmt.setInt( 9, pk.getId() );
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
@@ -348,6 +365,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		return findByDynamicSelect( SQL_SELECT + " WHERE type = ? ORDER BY type", new Object[] { type } );
 	}
 
+	/** 
+	 * Returns all rows from the items table that match the criteria 'bpId = :bpId'.
+	 */
+	public Items[] findWhereBpIdEquals(int bpId) throws ItemsDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE bpId = ? ORDER BY bpId", new Object[] {  new Integer(bpId) } );
+	}
+
 	/**
 	 * Method 'ItemsDaoImpl'
 	 * 
@@ -448,6 +473,11 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		}
 		
 		dto.setType( rs.getString( COLUMN_TYPE ) );
+		dto.setBpId( rs.getInt( COLUMN_BP_ID ) );
+		if (rs.wasNull()) {
+			dto.setBpIdNull( true );
+		}
+		
 	}
 
 	/** 

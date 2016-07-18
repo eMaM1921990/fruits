@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.app.business.X_BP;
 import com.app.business.X_Items;
+import com.app.dal.dto.BusinessPartner;
 import com.app.dal.dto.Items;
 import com.app.dal.exceptions.BusinessPartnerDaoException;
 import com.app.dal.exceptions.ItemsDaoException;
@@ -53,10 +54,19 @@ public class patti extends HttpServlet {
 		String defaultURL="/purchase/patti.jsp";
 		I_Items business=new X_Items();
 		try {
-			Items[] data=business.list(request);
+			Items[] data=business.listByBpId(request);
 			request.setAttribute("ItemData", data);
 			request.setAttribute("ItemDataJSON", new Gson().toJson(data));
 		} catch (ItemsDaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		I_BP b_business=new X_BP();
+		try {
+			BusinessPartner[] list=b_business.purchaser(request);
+			request.setAttribute("purchaser", list);
+		} catch (BusinessPartnerDaoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

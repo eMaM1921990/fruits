@@ -39,6 +39,19 @@
 
                     	<table>
                     		<tr>
+                    			<td>Purchaser:</td>
+                    			<td>
+                    				<div class="select-style">
+                           						<select name="bpId" id="bpId" onchange="getBpItem()">
+                           							<option>Select purchaser</option>
+				                        				<c:forEach items="${purchaser }" var="cus">
+				                        					<option value="${cus.id }">${cus.bpName }</option>
+				                        				</c:forEach>
+                           						</select>
+                           				</div>
+                    			</td>
+                    		</tr>
+                    		<tr>
                     			<td>Generate Patti</td>
                     			
                     		
@@ -53,6 +66,7 @@
                             <table id="itemstbl">
 	                            	<thead>
 	                            		<th>Fruit code</th>
+	                            		<th>Fruit name/Type</th>
 	                            		<th>Actual cost</th>
 	                            		<th>Actual quantity</th>
 	                            		<th>Avg. Cost</th>
@@ -67,14 +81,13 @@
 	                            			<td>
 	                            				<div class="select-style">
 	                            				
-		                            				<select name="itemId" onchange="getInvoicePurchaser(this.value,1);getItemActualCost(this.value,1);getAvg(this.value,1);balance(1)" id="itemId">
+		                            				<select name="itemId" onchange="getItem(this.value,1);getInvoicePurchaser(this.value,1);getItemActualCost(this.value,1);getAvg(this.value,1);balance(1)" id="itemId_1">
 		                                        		<option>Select Fruit</option>
-		                                        		<c:forEach items="${ItemData }" var="c">
-		                                        			<option value="${c.id }">${c.code }</option>
-		                                        		</c:forEach>
+		                                        		
 		                                        	</select>
 	                                        	</div>
 	                            			</td>
+	                            			<td><p id="itemName_1"></td>
 	                            			<td><input type="text" name="actualCost" id="actualCost_1" style="width: 50px;color:red" readonly="readonly"/></td>
 	                            			<td><input type="text" name="actualQuantity" id="actualQuantity_1" style="width: 50px;color:red" readonly="readonly"/></td>
 	                            			<td><input type="hidden" id="purchaser_1" name="purchaser"><input type="text" name="avgCost" id="avgCost_1" style="width: 50px"/></td>
@@ -131,11 +144,14 @@
 <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript">
 var dict = [];
+var bpItem=[];
 function convertToDic(Json){
 		
 	for(var i=0;i<Json.length;i++){
 	
 		dict[Json[i].id]=Json[i];
+		console.log(JSON.stringify(Json[i]));
+		bpItem.push(Json[i]);
 	}
 
 }
@@ -146,15 +162,36 @@ function getItemActualCost(id,index){
 }
 
 
+function getBpItem(){
+	var index=getLastRow();
+	console.log(index);
+	var bpId=$('#bpId').val();
+	$('#itemId_'+index).find('option').remove().end();
+	$('#itemId_'+index).append('<option ></option>');
+	var jsonObj=bpItem;
+	console.log(jsonObj);
+	for(var i=0;i<jsonObj.length;i++){
+		if(jsonObj[i].bpId==bpId){
+			$('#itemId_'+index).append('<option value=' + jsonObj[i].id + '>' + jsonObj[i].code + '</option>');	
+		}
+		
+	}
+}
+
+function getLastRow(){
+	return $('#itemstbl tr:last').attr('id');
+}
+
 var lastID=1;
 
 function addNewRow(){
 	lastID=lastID+1;
-	var fruit="<div class='select-style'><select name='itemId' onchange='getInvoicePurchaser(this.value,"+lastID+");getItemActualCost(this.value,"+lastID+");getAvg(this.value,"+lastID+");balance("+lastID+")' id='itemId'><option>Select Fruit</option>";
-	for (var key in dict) {
-		fruit=fruit+"<option value='"+dict[key].id+"'>"+dict[key].code+"</option>";
-	}
+	var fruit="<div class='select-style'><select name='itemId' onchange='getItem(this.value,"+lastID+");getInvoicePurchaser(this.value,"+lastID+");getItemActualCost(this.value,"+lastID+");getAvg(this.value,"+lastID+");balance("+lastID+")' id='itemId_"+lastID+"'><option>Select Fruit</option>";
+// 	for (var key in dict) {
+// 		fruit=fruit+"<option value='"+dict[key].id+"'>"+dict[key].code+"</option>";
+// 	}
 	fruit=fruit+"</select></div>";
+	var itemName='<p id="itemName_'+lastID+'">';
 	var purchaser='<input type="hidden" id="purchaser_'+lastID+'" name="purchaser"/>';
 	var avgCost='<input type="text" name="avgCost" id="avgCost_'+lastID+'" style="width: 50px"/>';
 	var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px"/>';
@@ -163,9 +200,15 @@ function addNewRow(){
 	var balance='<input type="text" name="total" id="total_'+lastID+'" style="width: 50px;color:green" readonly="readonly"/>';
 	var deleteBtn='<a href="javascript:removeRow('+lastID+')">remove</a>';
 	var control=deleteBtn;
-	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+balance+'</td><td>'+control+'</td></tr>');
+	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+itemName+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+balance+'</td><td>'+control+'</td></tr>');
+	getBpItem();
 }
 
+
+function getItem(val,index){
+	
+	$('#itemName_'+index).text(dict[parseInt(val)].name+" / "+dict[parseInt(val)].type);
+}
 
 function validateTable(){
 	rowData=[];

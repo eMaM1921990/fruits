@@ -79,6 +79,11 @@ public interface ItemsDao
 	public Items[] findWhereTypeEquals(String type) throws ItemsDaoException;
 
 	/** 
+	 * Returns all rows from the items table that match the criteria 'bpId = :bpId'.
+	 */
+	public Items[] findWhereBpIdEquals(int bpId) throws ItemsDaoException;
+
+	/** 
 	 * Sets the value of maxRows
 	 */
 	public void setMaxRows(int maxRows);

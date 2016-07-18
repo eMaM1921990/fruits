@@ -66,6 +66,16 @@ public class Items implements Serializable
 	 */
 	protected String type;
 
+	/** 
+	 * This attribute maps to the column bpId in the items table.
+	 */
+	protected int bpId;
+
+	/** 
+	 * This attribute represents whether the primitive attribute bpId is null.
+	 */
+	protected boolean bpIdNull = true;
+
 	/**
 	 * Method 'Items'
 	 * 
@@ -278,6 +288,47 @@ public class Items implements Serializable
 	}
 
 	/**
+	 * Method 'getBpId'
+	 * 
+	 * @return int
+	 */
+	public int getBpId()
+	{
+		return bpId;
+	}
+
+	/**
+	 * Method 'setBpId'
+	 * 
+	 * @param bpId
+	 */
+	public void setBpId(int bpId)
+	{
+		this.bpId = bpId;
+		this.bpIdNull = false;
+	}
+
+	/**
+	 * Method 'setBpIdNull'
+	 * 
+	 * @param value
+	 */
+	public void setBpIdNull(boolean value)
+	{
+		this.bpIdNull = value;
+	}
+
+	/**
+	 * Method 'isBpIdNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isBpIdNull()
+	{
+		return bpIdNull;
+	}
+
+	/**
 	 * Method 'equals'
 	 * 
 	 * @param _other
@@ -338,6 +389,14 @@ public class Items implements Serializable
 			return false;
 		}
 		
+		if (bpId != _cast.bpId) {
+			return false;
+		}
+		
+		if (bpIdNull != _cast.bpIdNull) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -370,6 +429,8 @@ public class Items implements Serializable
 			_hashCode = 29 * _hashCode + type.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + bpId;
+		_hashCode = 29 * _hashCode + (bpIdNull ? 1 : 0);
 		return _hashCode;
 	}
 
@@ -399,6 +460,7 @@ public class Items implements Serializable
 		ret.append( ", code=" + code );
 		ret.append( ", price=" + price );
 		ret.append( ", type=" + type );
+		ret.append( ", bpId=" + bpId );
 		return ret.toString();
 	}
 

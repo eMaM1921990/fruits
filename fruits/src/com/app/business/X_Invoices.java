@@ -131,14 +131,12 @@ public class X_Invoices implements I_Invoice{
 			if(request.getParameterMap().containsKey("stockPurchase")){
 				Items i_dto=new Items();
 				i_dto.setCode(dto.getCode());
-				System.out.println("Price---->"+obj.getDouble("price"));
 				i_dto.setPrice(obj.getDouble("price"));
 				i_dto.setQuantity(obj.getDouble("quantity"));
-				System.out.println("type====>"+obj.getString("type"));
 				i_dto.setType(obj.getString("type"));
 				i_dto.setName(obj.getString("name"));
 				i_dto.setId(obj.getInt("itemId"));
-				
+				i_dto.setBpId(Integer.parseInt(request.getParameter("bpId")));
 				
 				try {
 					ItemsDaoFactory.create().update(i_dto.createPk(), i_dto);
