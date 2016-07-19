@@ -21,6 +21,7 @@ public class X_BP implements I_BP{
 		dto.setIsCustomer((short)(request.getParameter("isCustomer")==null?0:1));
 		dto.setIsEmployee((short)(request.getParameter("isEmployee")==null?0:1));
 		dto.setIsSupplier((short)(request.getParameter("isSupplier")==null?0:1));
+		dto.setBalance(Double.parseDouble(request.getParameter("bpBalance")));
 		BusinessPartnerDaoFactory.create().insert(dto);
 		
 	}
