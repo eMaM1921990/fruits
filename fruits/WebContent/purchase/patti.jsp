@@ -219,7 +219,7 @@ function validateTable(){
         var avgQuantity = $this.find("input[name=avgQuantity]").val();
         var actualCost = $this.find("input[name=actualCost]").val();
         var actualQuantity = $this.find("input[name=actualQuantity]").val();
-        var itemId=$this.find("select[id=itemId]").val()
+        var itemId=$this.find("select[name=itemId]").val()
         
         if(typeof purchaser!=='undefined' && purchaser.trim().length>0 ){
         	rowData.push({

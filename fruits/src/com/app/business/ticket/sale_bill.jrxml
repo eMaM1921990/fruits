@@ -1,89 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sale_bill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="391d09f6-fbd2-4d21-ae9f-0835c0e24949">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="56"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="invoice_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from invoices i inner join invoice_line l on l.invoice_id=i.id
-inner join business_partner b on b.id=i.bp_id
-inner join items it on it.id=l.item_id
- where i.id=$P{invoice_id}]]>
+		<![CDATA[SELECT
+     (l.`price`*l.`quantity`) AS l_total_price,
+     it.`type` AS it_type,
+     it.`name` AS it_name,
+     i.`grand_total` AS i_grand_total,
+     i.`date` AS i_date,
+     l.`price` AS l_price,
+     l.`quantity` AS l_quantity,
+     b.`bp_name` AS b_bp_name,
+     b.`bp_phone` AS b_bp_phone,
+     b.`bp_address` AS b_bp_address,
+     b.`is_employee` AS b_is_employee,
+     b.`is_customer` AS b_is_customer,
+     b.`balance` AS b_balance,
+     b.`is_supplier` AS b_is_supplier,
+     it.`quantity` AS it_quantity,
+     it.`stock_id` AS it_stock_id,
+     it.`code` AS it_code,
+     it.`price` AS it_price,
+     it.`bpId` AS it_bpId,
+     i.`emp_id` AS i_emp_id,
+     i.`is_trx` AS i_is_trx,
+     i.`bp_id` AS i_bp_id,
+     l.`invoice_id` AS l_invoice_id,
+     l.`item_id` AS l_item_id,
+     l.`code` AS l_code,
+     l.`type` AS l_type,
+     i.`id` AS i_id
+FROM
+     `invoice_line` l INNER JOIN `invoices` i ON l.`invoice_id` = i.`id`
+     INNER JOIN `business_partner` b ON i.`bp_id` = b.`id`
+     INNER JOIN `items` it ON l.`item_id` = it.`id`
+WHERE
+     i.id = $P{invoice_id}]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="date" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="grand_total" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bp_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="is_trx" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[true if sale
-false if purchase]]></fieldDescription>
-	</field>
-	<field name="emp_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="invoice_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="item_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="price" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="quantity" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total_price" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="code" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bp_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bp_phone" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bp_address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="is_employee" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="is_customer" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="is_supplier" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="balance" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="stock_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="l_total_price" class="java.lang.Double"/>
+	<field name="it_type" class="java.lang.String"/>
+	<field name="it_name" class="java.lang.String"/>
+	<field name="i_grand_total" class="java.lang.String"/>
+	<field name="i_date" class="java.sql.Date"/>
+	<field name="l_price" class="java.lang.Double"/>
+	<field name="l_quantity" class="java.lang.Double"/>
+	<field name="b_bp_name" class="java.lang.String"/>
+	<field name="b_bp_phone" class="java.lang.String"/>
+	<field name="b_bp_address" class="java.lang.String"/>
+	<field name="b_is_employee" class="java.lang.Boolean"/>
+	<field name="b_is_customer" class="java.lang.Boolean"/>
+	<field name="b_balance" class="java.lang.Double"/>
+	<field name="b_is_supplier" class="java.lang.Boolean"/>
+	<field name="it_quantity" class="java.lang.Double"/>
+	<field name="it_stock_id" class="java.lang.Integer"/>
+	<field name="it_code" class="java.lang.String"/>
+	<field name="it_price" class="java.lang.Double"/>
+	<field name="it_bpId" class="java.lang.Integer"/>
+	<field name="i_emp_id" class="java.lang.Integer"/>
+	<field name="i_is_trx" class="java.lang.Boolean"/>
+	<field name="i_bp_id" class="java.lang.Integer"/>
+	<field name="l_invoice_id" class="java.lang.Integer"/>
+	<field name="l_item_id" class="java.lang.Integer"/>
+	<field name="l_code" class="java.lang.String"/>
+	<field name="l_type" class="java.lang.String"/>
+	<field name="i_id" class="java.lang.Integer"/>
 	<variable name="price_1" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{price}]]></variableExpression>
+		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
 	<variable name="total_price_1" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{total_price}]]></variableExpression>
+		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -98,21 +88,21 @@ false if purchase]]></fieldDescription>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{l_invoice_id}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="73" y="20" width="205" height="20" uuid="82becd1b-20f0-4084-b3bc-ac5efafca387"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bp_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{b_bp_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="407" y="0" width="148" height="20" uuid="4afdc2f9-ea55-4d2b-91e6-577e6787663c"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{i_date}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="73" height="20" uuid="c2f71456-456d-4a0d-84dd-415c8ecd6324"/>
@@ -141,7 +131,7 @@ false if purchase]]></fieldDescription>
 					<font fontName="Tahoma" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{balance}-Double.parseDouble($F{grand_total})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{b_balance}-Double.parseDouble($F{i_grand_total})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="300" y="20" width="105" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="76156082-00c3-4abf-98ab-f0a6fcf242ad"/>
@@ -194,40 +184,40 @@ false if purchase]]></fieldDescription>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="100" height="20" uuid="2cd855ff-e0d7-4ceb-ad74-447ed70350a4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{it_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="100" y="0" width="213" height="20" uuid="47706e5d-37e0-4a20-83dc-0e984149dfe8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{it_type}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="313" y="0" width="61" height="20" uuid="57a6391b-8266-4e1b-954b-23276c2c4c49"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{l_quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="374" y="0" width="64" height="20" uuid="e8b1f3e7-353d-4801-91af-950880db7f3e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{l_price}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="438" y="1" width="117" height="20" uuid="ab4cc242-603f-4816-b1a4-efbf3463d7f8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{quantity}*$F{price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{l_total_price}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -247,7 +237,7 @@ false if purchase]]></fieldDescription>
 					<font fontName="Tahoma" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{b_balance}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="338" y="20" width="100" height="20" forecolor="#000000" backcolor="#F29D15" uuid="3483dd23-b05d-489c-bf26-d3eceaa17f1f"/>
@@ -263,7 +253,7 @@ false if purchase]]></fieldDescription>
 					<font fontName="Tahoma" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{grand_total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{i_grand_total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

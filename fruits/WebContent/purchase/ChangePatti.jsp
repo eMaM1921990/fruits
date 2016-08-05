@@ -38,11 +38,12 @@
                    	<%@include file="../notification.jsp" %>
 
                     	<table>
-                    		<tr>
+                    	
+                                        		<tr>
                     			<td>Change Patti</td>
                     			<td>
                     				<div class="select-style">
-                           						<select name="pattiId" id="pattiId" onchange="pattiDetail(this.value)">
+                           						<select name="pattiId" id="pattiId" onchange="pattiDetail(this.value);pattiMasterDetail(this.value)">
                            							<option>Select Patti</option>
 				                        				<c:forEach items="${patti }" var="p">
 				                        					<option value="${p.id }">${p.id }</option>
@@ -62,20 +63,44 @@
                             <table id="itemstbl">
 	                            	<thead>
 	                            		<th>Fruit code</th>
-	                            		<th>Avg. Cost</th>
-	                            		<th>Avg. Quantity</th>
+	                            		<th>Fruit name/Type</th>
 	                            		<th>Actual cost</th>
 	                            		<th>Actual quantity</th>
-	                            		<th>Commission percentage</th>
-	                            		<th>Cooli</th>
-	                            		<th>Lorry charges</th>
-	                            		<th>Balance</th>
+	                            		<th>Avg. Cost</th>
+	                            		<th>Total sold units</th>
+	                            		<th>Total</th>
+	                            		<th>--</th>
 	                            	</thead>
 	                            	<tbody>
 	                            		
 	                            	</tbody>
-                                </table>
+                              </table>
+                         </div>
+                         <div class="datagrid">
+                                	<table>
+                                		<tr>
+                                			<td>Subtotal:</td>
+                                			<td><p id="subtotal">Rs. 0</td>
+                                		</tr>
+                                		<tr>
+                                			<td>Commission:</td>
+                                			<td><input type="text" id="commission" value="0" onkeyup="CalcTotal()"> % - Rs. <input type="text" id="commission_val" value="0" onkeyup="CalcTotal()" readonly="readonly"> </td>
+                                		</tr>
+                                		<tr>
+                                			<td>Lorry Charge:</td>
+                                			<td>Rs. <input type="text" id="loory" value="0" onkeyup="CalcTotal()"></td>
+                                		</tr> 
+                                		<tr>
+                                			<td>Cooli :</td>
+                                			<td>Rs. <input type="text" id="cooli" value="0" onkeyup="CalcTotal()"></td>
+                                		</tr>
+                                		<tr>
+                                			<td>Total:</td>
+                                			<td><p id="total">Rs. 0</td>
+                                		</tr>
+                                	</table>
                                 </div>
+                         
                                 <div>
                                 	<input type="button" value="Update" class="button-style" onclick="saveData()"/>
                                 </div>
@@ -100,9 +125,10 @@ function convertToDic(Json){
 		
 	for(var i=0;i<Json.length;i++){
 	
-		dict[Json[i].id]=Json[i];
+		dict[Json[i].code]=Json[i];
 	}
 
+	console.log(dict);
 }
 
 function getItemActualCost(id,index){
@@ -117,16 +143,12 @@ function parseRows(JSON){
 	lastID=lastID+1;
 	for(var i=0;i<JSON.length;i++){
 		var fruit='<input type="hidden" value="'+JSON[i].id+'" name="id"/><input type="text"  name="code" value="'+JSON[i].code+'" readonly="readonly"/>';
-		var purchaser='<input type="hidden" id="purchaser_'+lastID+'" name="purchaser" value="'+JSON[i].bpId+'"/>';
-		var avgCost='<input type="text" name="avgCost" id="avgCost_'+lastID+'" style="width: 50px" value="'+JSON[i].avgCost+'"/>';
-		var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px" value="'+JSON[i].avgQuantity+'"/>';
-		var actualCost='<input type="text" name="actualCost" id="actualCost_'+lastID+'" style="width: 50px;color:red" readonly="readonly" value="'+JSON[i].actualCost+'"/>';
+// 		var purchaser='<input type="hidden" id="purchaser_'+lastID+'" name="purchaser" value="'+JSON[i].bpId+'"/>';
+		var avgCost='<input type="text" name="avgCost" id="avgCost_'+lastID+'" style="width: 50px" value="'+JSON[i].avgCost+'" onkeyup="RowTotal('+lastID+')"/>';
+		var avgQuantity='<input type="text" name="avgQuantity" id="avgQuantity_'+lastID+'" style="width: 50px" value="'+JSON[i].avgQuantity+'" onkeyup="RowTotal('+lastID+')"/>';
+		var actualCost='<input type="text" name="actualCost" id="actualCost_'+lastID+'"  style="width: 50px;color:red" readonly="readonly" value="'+JSON[i].actualCost+'"/>';
 		var actualQuantity='<input type="text" name="actualQuantity" id="actualQuantity_'+lastID+'" style="width: 50px;color:red" readonly="readonly" value="'+JSON[i].actualQuantity+'"/>';
-		var commissionPercent='<input type="text" name="commissionPercent" id="commissionPercent_'+lastID+'" style="width: 50px" onkeyup="balance('+lastID+')" value="'+JSON[i].commissionPercent+'"/>';
-		var cooli='<input type="text" name="cooli" id="cooli_'+lastID+'" style="width: 50px" style="width: 50px"  onkeyup="balance('+lastID+')" value="'+JSON[i].loory+'"/>';
-		var lorryCharges='<input type="text" name="lorryCharges" id="lorryCharges_'+lastID+'" style="width: 50px"  onkeyup="balance('+lastID+')" value="'+JSON[i].cooli+'"/>';
-		var balance='<input type="text" name="balance" id="balance_'+lastID+'" style="width: 50px;color:green" readonly="readonly" value="'+JSON[i].balance+'"/>';
-		$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+purchaser+fruit+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+commissionPercent+'</td><td>'+cooli+'</td><td>'+lorryCharges+'</td><td>'+balance+'</td></tr>');
+		$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+fruit+'</td><td>'+dict[JSON[i].code].name+"/"+dict[JSON[i].code].type+'</td><td>'+actualCost+'</td><td>'+actualQuantity+'</td><td>'+avgCost+'</td><td>'+avgQuantity+'</td><td id="balance_'+lastID+'">'+parseFloat(JSON[i].avgQuantity)*parseFloat(JSON[i].avgCost)+'</td></tr>');
 	}
 	
 }
@@ -170,6 +192,7 @@ function validateTable(){
 }
 
 function pattiDetail(id){
+	$('#itemstbl > tbody:last-child').empty();
 	$.ajax({
 		url : "ajax_pattiDetails",
 		type : "POST",
@@ -191,6 +214,33 @@ function pattiDetail(id){
 		}
 	});
 }
+
+function pattiMasterDetail(id){
+	$.ajax({
+		url : "ajax_pattiMasterDetails",
+		type : "POST",
+		dataType : "json",
+		async:false,
+		data : {
+			pattiId :id
+			
+		},
+		success : function(responseText) {
+				// render return json
+				$('#subtotal').html(responseText.subtotal +" Rs.");
+				$('#commission').val(responseText.commissionPercent);
+				$('#loory').val(responseText.loory);
+				$('#cooli').val(responseText.cooli);
+				$('#total').html(responseText.total +" Rs.");
+		},
+		error : function(xhr, errmsg, err) {
+			console.log(errmsg);
+
+		}
+	});
+}
+
+
 
 function getAvg(id,index){
 	$.ajax({
@@ -220,13 +270,18 @@ function getAvg(id,index){
 function saveData(){
 	
 	$.ajax({
-		url : "savePatti",
+		url : "updatePatti",
 		type : "POST",
 		dataType : "text",
 		async:false,
 		data : {
 		
-			data:JSON.stringify(validateTable())
+			data:JSON.stringify(validateTable()),
+			commissionPercent:$('#commission').val(),
+			loory:$('#loory').val(),
+			cooli:$('#cooli').val(),
+			subtotal:$('#subtotal').html().split(" ")[1],
+			total:$('#total').html().split(" ")[1]
 			
 		},
 		success : function(responseText) {
@@ -257,6 +312,38 @@ function balance(index){
 	var balance=parseFloat(cost)-totalDeduct;
 	$('#balance_'+index).val(balance);
 	
+}
+
+function RowTotal(index){
+	var cost=$('#actualCost_'+index).val();
+	var quantity=$('#avgQuantity'+index).val();
+	var balance=parseFloat(cost)*parseFloat(quantity);
+	$('#balance_'+index).html(balance);
+	CalcTotal();
+	
+}
+
+
+function CalcTotal(){
+	var subTotal=$('#subtotal').html().split(" ")[1];
+	var commissionPercent=0;
+	var commissionValue=0;
+	if(parseFloat($('#commission').val())>0){
+		var commissionValue=(parseFloat(subTotal)*parseFloat($('#commission').val()))/100;
+		$('#commission_val').val(commissionValue);
+	}else{
+		commissionPercent=(100*parseFloat($('#commission_val').val()))/parseFloat(subTotal);
+		$('#commission').val(commissionPercent);
+	}
+	
+	
+	
+	
+	var loory=$('#loory').val();
+	var cooli=$('#cooli').val();
+	
+	var total=parseFloat(subTotal)-(parseFloat(commissionValue)+parseFloat(loory)+parseFloat(cooli));
+	$('#total').html('Rs. '+total);
 }
 
 function removeRow(id){

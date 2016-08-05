@@ -97,7 +97,7 @@ function savePayment(){
 		data : {
 			bpId : $('#bpId').val(),
 			
-			amount: $('#amount').val()
+			amount: parseFloat($('#amount').val()*(-1))
 			
 			
 		},

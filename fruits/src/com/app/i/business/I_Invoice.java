@@ -42,4 +42,9 @@ public interface I_Invoice {
 	public void updatePattiLine(HttpServletRequest request) throws PattiLinesDaoException;
 	public String printPDF(int invoiceId,String reportName,HttpServletRequest request) throws JRException, SQLException;
 	public void updateInvoiceLine(HttpServletRequest request) throws NumberFormatException, InvoiceLineDaoException, BusinessPartnerDaoException;
+	public InvoiceVw[] getSellerInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
+	public String ajax_getSellerInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException;
+	public Patti getById(HttpServletRequest request) throws NumberFormatException, PattiDaoException;
+	public String ajax_getById(HttpServletRequest request) throws NumberFormatException, PattiDaoException;
+	public void updatePatti(HttpServletRequest request) throws PattiDaoException;
 }

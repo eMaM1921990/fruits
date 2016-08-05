@@ -79,7 +79,7 @@ function saveEmp(){
 			bpName : $('#bpName').val(),
 			bpPhone: $('#bpPhone').val(),
 			bpAddress: $('#bpAddress').val(),
-			bpBalance: $('#bpBalance').val(),
+			bpBalance: 0,
 			bpPANnumber: $('#bpPANnumber').val(),
 			isEmployee:1
 			

@@ -75,7 +75,6 @@
 	                            		<tr id="1">
 	                            			<td>
 	                            				<div class="select-style">
-	                            				
 		                            				<select name="itemId" onchange="getItemPrice(this.value,1)" id="itemId">
 		                                        		<option>Select Fruit</option>
 		                                        		<c:forEach items="${ItemData }" var="c">
@@ -85,12 +84,21 @@
 	                                        	</div>
 	                            			</td>
 	                            			<td><input type="text" name="name_1" id="name_1" readonly="readonly"/></td>
-	                            			<td><input type="text" name="quantity" id="quantity"/></td>
-	                            			<td><input type="text" name="price" id="price_1"/></td>
+	                            			<td><input type="text" name="quantity" id="quantity" onkeyup="TotalBalance()"/></td>
+	                            			<td><input type="text" name="price" id="price_1" onkeyup="TotalBalance()"/></td>
 	                            			<td><a href="javascript:removeRow(1)">remove</a></td>
 	                            		</tr>
 	                            	</tbody>
                                 </table>
+                                </div>
+                                <div class="datagrid">
+                                	<table>
+                                		<tr>
+                                		<td colspan="3">Total</td>
+                                		<td id="total">Rs. 0</td>
+                                	</tr>
+                                	</table>
+                                	
                                 </div>
                                 <div>
                                 	<input type="button" value="New row" class="button-style" onclick="addNewRow()"/>
@@ -115,27 +123,20 @@
 <script type="text/javascript">
 var dict = [];
 function convertToDic(Json){
-		
 	for(var i=0;i<Json.length;i++){
-	
 		dict[Json[i].id]=Json[i];
 	}
-
 }
 
 var customers=[];
 function CustomerDic(Json){
-	
-	for(var i=0;i<Json.length;i++){
-	
+	for(var i=0;i<Json.length;i++){	
 		customers[Json[i].id]=Json[i];
 	}
-
 }
 
 function getBalance(id){
-	$('#balance').html('Rs. '+customers[id].balance);
-	
+	$('#balance').html('Rs. '+customers[id].balance);	
 }
 
 
@@ -155,8 +156,8 @@ function addNewRow(){
 	}
 	fruit=fruit+"</select></div>";
 	var name='<input type="text" id="name_'+lastID+'" readonly="readonly"/>';
-	var quantity='<input type="text" name="quantity" />';
-	var price='<input type="text" name="price" id="price_'+lastID+'"/>';
+	var quantity='<input type="text" name="quantity" onkeyup="TotalBalance()"/>';
+	var price='<input type="text" name="price" id="price_'+lastID+'" onkeyup="TotalBalance()"/>';
 	var deleteBtn='<a href="javascript:removeRow('+lastID+')">remove</a>';
 	var control=deleteBtn;
 	$('#itemstbl > tbody:last-child').append('<tr id='+lastID+'><td>'+fruit+'</td><td>'+name+'</td><td>'+quantity+'</td><td>'+price+'</td><td>'+control+'</td></tr>');
@@ -170,7 +171,6 @@ function validateTable(){
         var quantity = $this.find("input[name=quantity]").val();
         var price = $this.find("input[name=price]").val();
         var itemId = $this.find("select[id=itemId]").val();
-        
         if(typeof quantity!=='undefined' && quantity.trim().length>0 && typeof price!=='undefined' && price.trim().length>0  && typeof itemId!=='undefined' && itemId.trim().length>0){
         	rowData.push({
               "itemId":parseInt(itemId),
@@ -179,27 +179,34 @@ function validateTable(){
               "code":dict[itemId].code
           });
         	grandTotal=grandTotal+(parseFloat(price)*parseFloat(quantity));
+        	$('#total').html('Rs. '+grandTotal);
         }
   });
-
 	return rowData;
-	
 }
 
-function saveData(){
+
+function TotalBalance(){
+	var grandTotal=0;
+	$("tbody > tr").each(function() {
+        $this = $(this);
+        var quantity = $this.find("input[name=quantity]").val();
+        var price = $this.find("input[name=price]").val();
+        if(typeof quantity!=='undefined' && quantity.trim().length>0 && typeof price!=='undefined' && price.trim().length>0 ){
+        	
+        	grandTotal=grandTotal+(parseFloat(price)*parseFloat(quantity));
+        }
+  });
 	
+	$('#total').html('Rs. '+grandTotal);
+
+}
+
+
+function saveData(){
 	$.ajax({
-		url : "saveToken",
-		type : "POST",
-		dataType : "text",
-		async:false,
-		data : {
-			token:1,
-			bpId : $('#bpId').val(),
-			isTrx : $('#isTrx').val(),
-			grandTotal:grandTotal,
-			data:JSON.stringify(validateTable())
-			
+		url : "saveToken",type : "POST",dataType : "text",async:false,
+		data : {token:1,bpId : $('#bpId').val(),isTrx : $('#isTrx').val(),grandTotal:$('#total').html().split(' ')[1],data:JSON.stringify(validateTable())
 		},
 		success : function(responseText) {
 			if(responseText.indexOf("[")>-1){
@@ -208,7 +215,6 @@ function saveData(){
 			}else{
 				$('#suc').removeAttr('style');
 				$('#msg_suc').html(responseText.split(":")[0]);
-				
 				var doc=$('#pdfDocument').attr('src',"tmp/"+responseText.split(":")[1]);
 				$('#pdfDocument').load(function() {
 					printTrigger('pdfDocument');

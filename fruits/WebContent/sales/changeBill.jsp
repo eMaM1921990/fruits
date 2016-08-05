@@ -46,7 +46,7 @@
                     			<td>
                     				<div class="select-style">
                     				
-	                    				<select name="bpId" id="bpId">
+	                    				<select name="bpId" id="bpId" >
 	                        				<option>Select Seller</option>
 	                        				<c:forEach items="${customer }" var="cus">
 	                        					<option value="${cus.id }">${cus.bpName }</option>
@@ -56,6 +56,20 @@
                     			</td>
                     		
                     		</tr>
+                    		
+<!--                     		<tr> -->
+<!--                     			<td>Invoices</td> -->
+<!--                     			<td> -->
+<!--                     				<div class="select-style"> -->
+                    				
+<!-- 	                    				<select name="invoiceId" id="invoiceId"> -->
+<!-- 	                        				<option>Select Invoice</option> -->
+	                        				
+<!-- 	                        			</select> -->
+<!--                         			</div> -->
+<!--                     			</td> -->
+                    		
+<!--                     		</tr> -->
                     		<tr>
                     			<td>Date :</td>
                     			<td><input type="text" id="date"></td>
@@ -102,6 +116,36 @@
 <script type="text/javascript">
 
 
+function getSellerInvoice(){
+	$("#itemstbl > tbody:last-child").empty();
+	$.ajax({
+		url : "ajax_getInvoiceList",
+		type : "POST",
+		dataType : "json",
+		async:false,
+		data : {
+			bpId : $('#bpId').val(),
+			
+		},
+		success : function(responseText) {
+			parseInvoiceToDroplist(responseText);
+		},
+		error : function(xhr, errmsg, err) {
+			console.log(errmsg);
+
+		}
+	});
+}
+
+
+function parseInvoiceToDroplist(jsonObj){
+	$('#invoiceId').find('option').remove().end();
+	$('#studentId').append('<option ></option>');
+	for(var i=0;i<jsonObj.length;i++){
+		$('#invoiceId').append('<option value='+jsonObj[i].id+'>'+jsonObj[i].id+'</option>');
+	}
+}
+
 function getInvoice(){
 	
 	$.ajax({
@@ -112,7 +156,8 @@ function getInvoice(){
 		data : {
 			bpId : $('#bpId').val(),
 			isTrx : $('#isTrx').val(),
-			date:$('#date').val()
+			date:$('#date').val(),
+// 			invoiceId:$('#invoiceId').val(),
 			
 		},
 		success : function(responseText) {
@@ -158,7 +203,7 @@ function update(id){
 			id : id,
 			oldPrice:$('#old_price_'+id).val(),
 			newPrice:$('#price_'+id).val(),
-			Quantity:$('#price_'+id).val(),
+			Quantity:$('#quantity_'+id).val(),
 			bpId : $('#bpId').val()
 			
 		},

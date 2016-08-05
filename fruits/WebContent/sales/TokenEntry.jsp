@@ -133,7 +133,7 @@ function CustomerDic(Json){
 	
 	for(var i=0;i<Json.length;i++){
 	
-		CustomerDic[Json[i].id]=Json[i];
+		customers[Json[i].id]=Json[i];
 	}
 
 }

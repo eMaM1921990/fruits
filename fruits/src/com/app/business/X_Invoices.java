@@ -153,7 +153,7 @@ public class X_Invoices implements I_Invoice{
 	@Override
 	public InvoiceVw[] previousInvoices(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException {
 		// TODO Auto-generated method stub
-		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere("date=? and bp_id=? and is_trx=?", new Object[]{dateFormatter.getSQLDate(request.getParameter("date")),Integer.parseInt(request.getParameter("bpId")),Integer.parseInt(request.getParameter("isTrx"))});
+		InvoiceVw[] data=InvoiceVwDaoFactory.create().findByDynamicWhere("date=? and bp_id=? and is_trx=? ", new Object[]{dateFormatter.getSQLDate(request.getParameter("date")),Integer.parseInt(request.getParameter("bpId")),Integer.parseInt(request.getParameter("isTrx"))});
 		return data;
 	}
 
@@ -236,6 +236,8 @@ public class X_Invoices implements I_Invoice{
 		dto.setCommissionPercent(Double.parseDouble(request.getParameter("commissionPercent")));
 		dto.setCooli(Double.parseDouble(request.getParameter("cooli")));
 		dto.setLoory(Double.parseDouble(request.getParameter("loory")));
+		dto.setSubtotal(Double.parseDouble(request.getParameter("subtotal")));
+		dto.setTotal(Double.parseDouble(request.getParameter("total")));
 		PattiPk pk=PattiDaoFactory.create().insert(dto);
 		if(pk!=null){
 			request.setAttribute("pk", pk.getId());
@@ -326,7 +328,6 @@ public class X_Invoices implements I_Invoice{
 			dto.setAvgQuantity(obj.getInt("avgQuantity"));
 			dto.setCode(obj.getString("code"));
 			dto.setPattiId((int)request.getAttribute("pk"));
-
 			dto.setBpId(obj.getInt("bpId"));
 			PattiLinesDaoFactory.create().insert(dto);
 			
@@ -374,6 +375,59 @@ public class X_Invoices implements I_Invoice{
 		updateBalance(Integer.parseInt(request.getParameter("bpId")), newPrice-oldPrice);
 		
 		
+		
+		
+	}
+
+	@Override
+	public InvoiceVw[] getSellerInvoice(HttpServletRequest request) throws NumberFormatException, InvoiceVwDaoException {
+		// TODO Auto-generated method stub
+		InvoiceVw[] data=InvoiceVwDaoFactory.create().findWhereBpIdEquals(Integer.parseInt(request.getParameter("bpId")));
+		return data;
+	}
+
+	@Override
+	public String ajax_getSellerInvoice(HttpServletRequest request)
+			throws NumberFormatException, InvoiceVwDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getSellerInvoice(request));
+	}
+
+	@Override
+	public Patti getById(HttpServletRequest request) throws NumberFormatException, PattiDaoException {
+		// TODO Auto-generated method stub
+		Patti data=PattiDaoFactory.create().findByPrimaryKey(Integer.parseInt(request.getParameter("pattiId")));
+		return data;
+	}
+
+	@Override
+	public String ajax_getById(HttpServletRequest request)
+			throws NumberFormatException, PattiDaoException {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(getById(request));
+	}
+
+	@Override
+	public void updatePatti(HttpServletRequest request) throws PattiDaoException {
+		// TODO Auto-generated method stub
+		Patti dto=new Patti();
+		dto.setPattiDate(new Date());
+		dto.setCommissionPercent(Double.parseDouble(request.getParameter("commissionPercent")));
+		dto.setCooli(Double.parseDouble(request.getParameter("cooli")));
+		dto.setLoory(Double.parseDouble(request.getParameter("loory")));
+		dto.setSubtotal(Double.parseDouble(request.getParameter("subtotal")));
+		dto.setTotal(Double.parseDouble(request.getParameter("total")));
+		dto.setId(Integer.parseInt(request.getParameter("id")));
+		PattiDaoFactory.create().update(dto.createPk(), dto);
+		
+		
+		request.setAttribute("pk", dto.createPk());
+		try {
+			updatePattiLine(request);
+		} catch (PattiLinesDaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}
